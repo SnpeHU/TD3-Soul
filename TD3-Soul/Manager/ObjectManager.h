@@ -7,10 +7,13 @@ class ObjectManager
 {
 public:
 	static ObjectManager* Instance();
+	void DestroyInstance();
+	void Init();
 	void Update();
 	void Draw(const Camera& camera);
 
-	void AddObject(std::unique_ptr<Object> object);
+	void AddObject(std::shared_ptr<Object> object);
+	void RemoveObject(std::shared_ptr<Object> object);
 private:
 	ObjectManager() = default;
 	~ObjectManager() = default;
@@ -18,5 +21,5 @@ private:
 private:
 	static ObjectManager* manager;
 
-	std::vector<std::unique_ptr<Object>> objects;
+	std::vector<std::shared_ptr<Object>> objects;
 };

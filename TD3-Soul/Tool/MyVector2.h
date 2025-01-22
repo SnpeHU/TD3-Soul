@@ -65,6 +65,38 @@ public:
 
 		return Vector2(x / len, y / len);
 	}
+
+	
+	Vector2 copy() const {
+		return Vector2(x, y);
+	}
+
+	static Vector2 add(const Vector2& a, const Vector2& b) {
+		return Vector2(a.x + b.x, a.y + b.y);
+	}
+
+	static Vector2 sub(const Vector2& a, const Vector2& b) {
+		return Vector2(a.x - b.x, a.y - b.y);
+	}
+
+	float heading() const {
+		return atan2(y, x);
+	}
+
+	Vector2 setMag(float mag) {
+		float currentMag = sqrt(x * x + y * y);
+		if (currentMag != 0) {
+			x = (x / currentMag) * mag;
+			y = (y / currentMag) * mag;
+		}
+		return *this;
+	}
+
+	static Vector2 fromAngle(float angle) {
+		return Vector2(cos(angle), sin(angle));
+	}
+
+
 };
 
 

@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "Manager/SceneManager.h"
 #include "Manager/ObjectManager.h"
+#include "Manager/CharactorManager.h"
+#include "Manager/collision_manager.h"
 #include "Novice.h"
 #include "Camera.h"
 extern Camera m_camera;
@@ -20,7 +22,7 @@ void Game::onInput(char* keys, char* prekeys)
 	{
 		SceneManager::Instance()->switchScene(SceneManager::SceneType::Title);
 	}
-
+	CharactorManager::Instance()->onInput(keys, prekeys);
 	m_camera.Input(keys);
 }
 
@@ -28,6 +30,7 @@ void Game::Update()
 {
 	m_camera.Update();
 	ObjectManager::Instance()->Update();
+	CollisionManager::Instance()->ProcessCollision();
 
 }
 

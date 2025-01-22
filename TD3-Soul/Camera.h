@@ -2,12 +2,10 @@
 #include "Tool/timer.h"
 #include "Tool/MyVector2.h"
 #include "Tool/Matrix.h"
+#include "Novice.h"
 
 extern float windowHeight;
 extern float windowWidth;
-
-
-
 class Camera
 {
 public:
@@ -16,6 +14,8 @@ public:
 		pos = _pos;
 		size = Vector2(windowWidth,windowHeight);
 		rotation = 0.0f;
+		scale = 1.0f;
+		angle = 0.0f;
 
 
 
@@ -32,6 +32,9 @@ public:
 	{
 		pos = Vector2(0, 0);
 		rotation = 0.0f;
+		scale = 1.0f;
+		angle = 0.0f;
+
 	}
 
 	void Input(char* keys)
@@ -53,14 +56,22 @@ public:
 			pos.x -= speed;
 		}
 
-		if (keys[DIK_Z])
-		{
-			rotation += 0.1f;
-		}
-		if (keys[DIK_X])
-		{
-			rotation -= 0.1f;
-		}
+		//if (keys[DIK_Z])
+		//{
+		//	scale += 0.05f;
+		//}
+		//if (keys[DIK_X])
+		//{
+		//	scale -= 0.05f;
+		//}
+		//if (keys[DIK_C])
+		//{
+		//	angle += 0.05f;
+		//}
+		//if (keys[DIK_V])
+		//{
+		//	angle -= 0.05f;
+		//}
 	}
 
 	void Update()
@@ -93,21 +104,33 @@ public:
 	{
 		Matrix3x3 translate = MakeTranslateMatrix(Vector2(-pos.x, pos.y));
 		Matrix3x3 rotate = MakeRotateMatrix(-rotation);
-		Matrix3x3 worldCameraMatrix = Multiply(rotate , translate);
+		Matrix3x3 scale_matrix = MakeScaleMatrix(scale);
+		Matrix3x3 worldCameraMatrix =Multiply(Multiply(rotate, scale_matrix), translate);
 		return Inverse(worldCameraMatrix);
 
 		//return Multiply(rotate, translate);
 	}
 
+	
 	Matrix3x3 GetProjectionMatrix() const
 	{
 		return MakeOrthographicMatrix(-size.x / 2, size.y / 2, size.x / 2, -size.y / 2);
-		//return MakeOrthographicMatrix(0.0f, size.y, size.x, 0.0f);
+		
+		//添加摄像机倾斜角度（透视投影）（有问题）
+		//return MakeObliqueOrthographicMatrix(-size.x / 2, size.y / 2, size.x / 2, -size.y / 2, angle);
 	}
 
 	Matrix3x3 GetViewportMatrix(float _windowWidth,float _windowHeight) const
 	{
 		return MakeViewportMartrix(0, 0, _windowWidth, _windowHeight);
+	}
+
+	Matrix3x3 GetCameraMatrix() const
+	{
+		//Matrix3x3 view = GetViewMatrix();
+		//Matrix3x3 projection = GetProjectionMatrix();
+		//Matrix3x3 viewport = GetViewportMatrix(windowWidth, windowHeight);
+		return Multiply(Multiply(view, projection), viewport);
 	}
 
 	Matrix3x3 GetObjectMatrix(const Vector2& worldPos,float objectRotation) const
@@ -120,6 +143,8 @@ public:
 		objectMatrix = Multiply(objectMatrix, viewport);
 		return objectMatrix;
 	}
+
+
 
 	const Vector2& GetPos() const
 	{
@@ -140,10 +165,22 @@ public:
 	{
 		rotation = _rotation;
 	}
+
+	float GetScale() const
+	{
+		return scale;
+	}
+
+	void SetScale(float _scale)
+	{
+		scale = _scale;
+	}
 private:
 	Vector2 pos;
 	Vector2 size;
 	float rotation;
+	float scale;
+	float angle;//摄像机角度
 
 	Matrix3x3 view = {};
 	Matrix3x3 projection = {};
@@ -151,6 +188,7 @@ private:
 
 
 	float speed = 3.0f;
+	
 
 
 	//摄像机抖动
@@ -160,4 +198,7 @@ private:
 	Vector2 shakePos = { 0,0 };
 
 	float deltaTime = 1.0f / 60.0f;
+
+	public:
+		float heightscale = 0.5f;//角色高度投影到地面的比例
 };

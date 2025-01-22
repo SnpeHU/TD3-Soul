@@ -1,6 +1,7 @@
 #include <Novice.h>
 #include <Manager/SceneManager.h>
 #include <Manager/CharactorManager.h>
+#include <Manager/ObjectManager.h>
 #include "Camera.h"
 //debug
 #ifdef _DEBUG
@@ -54,6 +55,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
+		Novice::DrawBox(0, 0, (int)windowWidth, (int)windowHeight, 0.0f, 0x272D35FF, kFillModeSolid);
 		SceneManager::Instance()->Draw(m_camera);
 
 
@@ -83,6 +85,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 
 	// ライブラリの終了
+	SceneManager::Instance()->DestroyInstance();
+	CharactorManager::Instance()->DestroyInstance();
+	ObjectManager::Instance()->DestroyInstance();
 	Novice::Finalize();
 	return 0;
 }

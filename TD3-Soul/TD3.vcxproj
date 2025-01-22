@@ -109,6 +109,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\StringUtility.cpp" />
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\DirectXCommon.cpp" />
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\WinApp.cpp" />
@@ -118,14 +119,22 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager\CharactorManager.cpp" />
+    <ClCompile Include="Manager\collision_manager.cpp" />
     <ClCompile Include="Manager\ObjectManager.cpp" />
     <ClCompile Include="Manager\SceneManager.cpp" />
     <ClCompile Include="Object\Charactor.cpp" />
+    <ClCompile Include="Object\Node.cpp" />
     <ClCompile Include="Object\Object.cpp" />
+    <ClCompile Include="Object\Player.cpp" />
+    <ClCompile Include="Object\Snake.cpp" />
     <ClCompile Include="Scene\Game.cpp" />
+    <ClCompile Include="Scene\TestScene.cpp" />
     <ClCompile Include="Scene\TitleScene.cpp" />
+    <ClCompile Include="State\SnakeState.cpp" />
+    <ClCompile Include="State\StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\base\StringUtility.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\math\Matrix4x4.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\math\Vector2.h" />
@@ -155,15 +164,30 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Manager\CharactorManager.h" />
+    <ClInclude Include="Manager\collision_box.h" />
+    <ClInclude Include="Manager\collision_layer.h" />
+    <ClInclude Include="Manager\collision_manager.h" />
     <ClInclude Include="Manager\ObjectManager.h" />
     <ClInclude Include="Manager\SceneManager.h" />
+    <ClInclude Include="Object\Chain.h" />
+    <ClInclude Include="Object\Chain_D.h" />
     <ClInclude Include="Object\Charactor.h" />
+    <ClInclude Include="Object\Node.h" />
     <ClInclude Include="Object\Object.h" />
+    <ClInclude Include="Object\Player.h" />
+    <ClInclude Include="Object\Snake_D.h" />
+    <ClInclude Include="Object\Snake.h" />
+    <ClInclude Include="Object\Util.h" />
     <ClInclude Include="Scene\Game.h" />
     <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\TestScene.h" />
     <ClInclude Include="Scene\TitleScene.h" />
+    <ClInclude Include="State\SnakeState.h" />
+    <ClInclude Include="State\StateMachine.h" />
+    <ClInclude Include="State\StateNode.h" />
     <ClInclude Include="Tool\Matrix.h" />
     <ClInclude Include="Tool\MyVector2.h" />
+    <ClInclude Include="Tool\MyVector3.h" />
     <ClInclude Include="Tool\read_csv.h" />
     <ClInclude Include="Tool\timer.h" />
   </ItemGroup>

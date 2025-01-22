@@ -6,17 +6,20 @@
 #include <Scene/TitleScene.h>
 //#include <ClearScene.h>
 #include <Scene/Game.h>
+#include <Scene/TestScene.h>
 #include <vector>
 class SceneManager
 {
 
 public:
 	static SceneManager* Instance();
+	void DestroyInstance();
 	enum class SceneType
 	{
 		Title,
 		Claer,
 		Game,
+		Test
 	};
 
 
@@ -47,6 +50,7 @@ private:
 
 	Scene* tieleScene = nullptr;
 	Scene* clearSCene = nullptr;
+	Scene* testScene = nullptr;
 	std::vector<Scene*> stageScene;
 public:
 	int stageNum = 2;//ステージの総数

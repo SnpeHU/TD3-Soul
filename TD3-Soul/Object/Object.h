@@ -1,24 +1,63 @@
 #pragma once
 #include "Tool/MyVector2.h"
+#include "Tool/MyVector3.h"
 #include "Tool/Matrix.h"
-class Camera;
+#include "Camera.h"
+#include <string>
+#include "Manager/collision_box.h"
+#include "Manager/collision_manager.h"
+using std::string;
 class Object
 {
 public:
 	Object() = default;
-	virtual ~Object() = default;
+	virtual ~Object();
 	virtual void Update() = 0;
 	virtual void Draw(const Camera& camera);
 
+	void DrawDebug(const Camera& camera);
 
-	Vector2 GetPos() { return pos; };
-	void SetPos(Vector2 _pos) { pos = _pos; };
 
+	Vector3 GetPos() const { return pos; };
+	void SetPos(Vector3 _pos) { pos = _pos; };
+
+	bool GetCanRemove() const { return isCanRemove; };
+	void SetCanRemove(bool _isCanRemove) { isCanRemove = _isCanRemove; };
+
+	//Vector2 get_logic_center() const
+	//{
+	//	return Vector2(pos.x, pos.y + hurtBoxSize.y / 2);
+	//}
+
+	Vector3 get_logic_center() const
+	{
+		return Vector3(pos.x, pos.y + hurtBoxSize.y / 2,pos.z);
+	}
+	
+public:
+	string name = "none";
 
 protected:
 
-	Vector2 pos;
+	
+
+	Vector3 pos;
+	Vector2 size;
 	Matrix3x3 objectMatrix = {};
-	bool isDeBug = false;
+
+	CollisionBox* hurt_box = nullptr;
+	Vector2 hurtBoxSize;
+
+
+	bool isCanRemove = false;
+	bool isDeBug = true;
+	bool isShadow = true;
+
+
+
+
+	Vector2 shadowSize;
+	//影子颜色为黑色
+	int shadowColor = 0x00000030;
 
 };

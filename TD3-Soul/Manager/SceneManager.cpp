@@ -11,12 +11,22 @@ SceneManager* SceneManager::Instance()
 	return manager;
 }
 
+void SceneManager::DestroyInstance()
+{
+	if (manager)
+	{
+		delete manager;
+		manager = nullptr;
+	}
+}
+
 void SceneManager::Init()
 {
 	tieleScene = new TitleScene();
 	//clearSCene = new ClearScene();
+	testScene = new TestScene();
 	stageScene.push_back(new Game());
-	setCurrentScene(stageScene[0]);
+	setCurrentScene(testScene);
 }
 
 
@@ -55,6 +65,9 @@ void SceneManager::switchScene(SceneType type)
 		break;
 	case SceneManager::SceneType::Game:
 		currentScene = stageScene[selectedStage];
+		break;
+	case SceneManager::SceneType::Test:
+		currentScene = testScene;
 		break;
 	default:
 		break;

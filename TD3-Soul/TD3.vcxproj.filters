@@ -26,6 +26,21 @@
     <Filter Include="Object">
       <UniqueIdentifier>{f01f04eb-0b54-464a-baa6-8a29ea897032}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Snake">
+      <UniqueIdentifier>{f494be59-43e8-49c0-b30e-5afb4e56977b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Bullet">
+      <UniqueIdentifier>{da2a07c8-4bfb-48fe-871c-f54223cb3c7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\StateMachine">
+      <UniqueIdentifier>{89930628-f20f-46c0-a644-b454be0c8592}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Player">
+      <UniqueIdentifier>{3bd051e9-4a89-4bdf-8d42-fe189adc3837}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\Collision">
+      <UniqueIdentifier>{0e7a6bfb-87a7-435e-b86d-9a8ac145d034}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\DirectXCommon.cpp">
@@ -70,6 +85,30 @@
     </ClCompile>
     <ClCompile Include="Object\Object.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Snake.cpp">
+      <Filter>Object\Snake</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\TestScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Node.cpp">
+      <Filter>Object\Snake</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="State\StateMachine.cpp">
+      <Filter>Object\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="State\SnakeState.cpp">
+      <Filter>Object\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Player.cpp">
+      <Filter>Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\collision_manager.cpp">
+      <Filter>Manager\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +219,54 @@
     </ClInclude>
     <ClInclude Include="Tool\Matrix.h">
       <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Snake.h">
+      <Filter>Object\Snake</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Chain.h">
+      <Filter>Object\Snake</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Util.h">
+      <Filter>Object\Snake</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TestScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Snake_D.h">
+      <Filter>Object\Snake</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Chain_D.h">
+      <Filter>Object\Snake</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\MyVector3.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Node.h">
+      <Filter>Object\Snake</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="State\StateMachine.h">
+      <Filter>Object\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="State\StateNode.h">
+      <Filter>Object\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="State\SnakeState.h">
+      <Filter>Object\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Player.h">
+      <Filter>Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\collision_box.h">
+      <Filter>Manager\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\collision_layer.h">
+      <Filter>Manager\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\collision_manager.h">
+      <Filter>Manager\Collision</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
