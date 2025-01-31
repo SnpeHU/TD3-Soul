@@ -26,6 +26,11 @@ public:
 		x += vec.x, y += vec.y;
 	}
 
+	void operator+=(const float val)
+	{
+		x += val, y += val;
+	}
+
 	void operator-=(const Vector2& vec)
 	{
 		x -= vec.x, y -= vec.y;
@@ -95,6 +100,7 @@ public:
 	static Vector2 fromAngle(float angle) {
 		return Vector2(cos(angle), sin(angle));
 	}
+
 
 
 };

@@ -11,7 +11,7 @@
 
 const char kWindowTitle[] = "GC1A_05_コウ_ホウケイ_タイトル";
 
-float windowWidth = 1280;
+ float windowWidth = 1280;
 float windowHeight = 720;
 
 Camera m_camera(Vector2(0.0f, 0.0f));
@@ -27,11 +27,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	char preKeys[256] = {0};
 
 	
-
+	int backColor = 0xEFF0E6FF;
 
 	// シーンマネージャーの初期化
 	SceneManager::Instance()->Init();
-	CharactorManager::Instance()->Init();
+	
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -55,7 +55,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
-		Novice::DrawBox(0, 0, (int)windowWidth, (int)windowHeight, 0.0f, 0x272D35FF, kFillModeSolid);
+		Novice::DrawBox(0, 0, (int)windowWidth, (int)windowHeight, 0.0f, backColor, kFillModeSolid);
 		SceneManager::Instance()->Draw(m_camera);
 
 

@@ -29,15 +29,20 @@ void ObjectManager::Init()
 
 void ObjectManager::Update()
 {
-	//根据Y轴排序
+	//根据Y轴排序 Y軸によって並べる
 	std::sort(objects.begin(), objects.end(), [](const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b) {
 		return a->GetPos().y > b->GetPos().y;
+		//return (a->GetPos().y* a->GetPos().y + a->GetPos().z * a->GetPos().z) < (b->GetPos().y* b->GetPos().y + b->GetPos().z* b->GetPos().z);
 	});
 
 	for (auto& object : objects)
 	{
 		object->Update();
 	}
+	//删除标记为可删除的对象 削除可能なオブジェクトを削除する
+	objects.erase(std::remove_if(objects.begin(), objects.end(), [](const std::shared_ptr<Object>& object) {
+		return object->GetCanRemove();
+		}), objects.end());
 }
 
 void ObjectManager::Draw(const Camera& camera)
@@ -76,4 +81,9 @@ void ObjectManager::RemoveObject(std::shared_ptr<Object> object)
 	{
 		objects.erase(it);
 	}
+}
+
+void ObjectManager::RemoveAllObject()
+{
+	objects.clear();
 }

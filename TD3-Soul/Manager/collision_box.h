@@ -42,6 +42,8 @@ public:
 	void setPos(const Vector3& _pos) {
 		this->pos = _pos;
 	}
+	CollisionBox(Object* owner) : owner(owner) {}
+	~CollisionBox() = default;
 private:
 	Vector2 size;
 	Vector3 pos;//boxの中心座標
@@ -57,7 +59,7 @@ private:
 
 
 
-	CollisionBox(Object* owner) : owner(owner) {}
-	~CollisionBox() = default;
+	
+	
 
 };

@@ -14,6 +14,7 @@ public:
 
 	void AddObject(std::shared_ptr<Object> object);
 	void RemoveObject(std::shared_ptr<Object> object);
+	void RemoveAllObject();
 private:
 	ObjectManager() = default;
 	~ObjectManager() = default;

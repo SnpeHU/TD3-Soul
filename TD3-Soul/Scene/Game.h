@@ -1,5 +1,7 @@
 #pragma once
 #include "Scene.h"
+class BlockEmitter;
+class CircleEmitter;
 class Game : public Scene
 {
 public:
@@ -14,5 +16,6 @@ public:
 	void onExit() override;
 
 private:
-
+	BlockEmitter* blockEmitter = nullptr;
+	CircleEmitter* circleEmitter = nullptr;
 };

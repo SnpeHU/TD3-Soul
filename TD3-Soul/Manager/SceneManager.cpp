@@ -26,7 +26,7 @@ void SceneManager::Init()
 	//clearSCene = new ClearScene();
 	testScene = new TestScene();
 	stageScene.push_back(new Game());
-	setCurrentScene(testScene);
+	setCurrentScene(tieleScene);
 }
 
 
@@ -39,6 +39,11 @@ void SceneManager::onInput(char* keys, char* prekeys)
 void SceneManager::Update()
 {
 	currentScene->Update();
+	if (nextScene != SceneType::None)
+	{
+		switchScene(nextScene);
+		nextScene = SceneType::None;
+	}
 }
 
 void SceneManager::Draw(const Camera& camera)

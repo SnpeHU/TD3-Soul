@@ -38,7 +38,7 @@ public:
         for (int i = 1; i < jointCount; i++) {
 			joints.push_back(std::make_shared<Node>(Vector3::add(joints[i-1]->GetPos(),Vector3(0,this->linkSize,0))));
 			//angles.push_back(0.0f);
-            angles.push_back({ 0.0f, 0.0f });
+            angles.push_back({ 30.0f, 0.0f });
         }
 
 		//添加到ObjectManager
@@ -82,6 +82,8 @@ public:
 #endif
         
     }
+
+
 
 
 	//通过两个点的位置，处理链条（第一个点是固定的）（IK处理）

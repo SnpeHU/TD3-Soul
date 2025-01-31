@@ -41,6 +41,9 @@
     <Filter Include="Manager\Collision">
       <UniqueIdentifier>{0e7a6bfb-87a7-435e-b86d-9a8ac145d034}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Emitter">
+      <UniqueIdentifier>{c2f48dfe-373d-4ddb-bfba-290e5786743a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\DirectXCommon.cpp">
@@ -95,9 +98,6 @@
     <ClCompile Include="Object\Node.cpp">
       <Filter>Object\Snake</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Object\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="State\StateMachine.cpp">
       <Filter>Object\StateMachine</Filter>
     </ClCompile>
@@ -109,6 +109,43 @@
     </ClCompile>
     <ClCompile Include="Manager\collision_manager.cpp">
       <Filter>Manager\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Bullet.cpp">
+      <Filter>Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\PlayerBullet.cpp">
+      <Filter>Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="State\PlayerBulletState.cpp">
+      <Filter>Object\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Object\Wall.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BasicBullet.cpp">
+      <Filter>Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Beam.cpp">
+      <Filter>Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Emitter\Emitter.cpp">
+      <Filter>Object\Emitter</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Emitter\BlockEmiiter.cpp">
+      <Filter>Object\Emitter</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Emitter\BlockParticle.cpp">
+      <Filter>Object\Emitter</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Emitter\CircleEmitter.cpp">
+      <Filter>Object\Emitter</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Emitter\CircleParticle.cpp">
+      <Filter>Object\Emitter</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\ButtonWall.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,9 +281,6 @@
     <ClInclude Include="Object\Node.h">
       <Filter>Object\Snake</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Object\Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="State\StateMachine.h">
       <Filter>Object\StateMachine</Filter>
     </ClInclude>
@@ -267,6 +301,45 @@
     </ClInclude>
     <ClInclude Include="Manager\collision_manager.h">
       <Filter>Manager\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\PlayerBullet.h">
+      <Filter>Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Bullet.h">
+      <Filter>Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="State\PlayerBulletState.h">
+      <Filter>Object\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Wall.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BasicBullet.h">
+      <Filter>Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Beam.h">
+      <Filter>Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Emitter\Emitter.h">
+      <Filter>Object\Emitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Emitter\Particle.h">
+      <Filter>Object\Emitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Emitter\BlockParticle.h">
+      <Filter>Object\Emitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Emitter\BlockEmiiter.h">
+      <Filter>Object\Emitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Emitter\CircleEmitter.h">
+      <Filter>Object\Emitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Emitter\CircleParticle.h">
+      <Filter>Object\Emitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\ButtonWall.h">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

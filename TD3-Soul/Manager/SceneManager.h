@@ -19,7 +19,8 @@ public:
 		Title,
 		Claer,
 		Game,
-		Test
+		Test,
+		None
 	};
 
 
@@ -34,6 +35,14 @@ public:
 
 	void switchScene(SceneType type);
 
+	//setnextScene
+	void setNextScene(SceneType type) { nextScene = type; }
+	//getcurrentScene
+	SceneType getCurrentSceneType() const { return nextScene; }
+
+
+
+
 	Scene* getCurrentScene() const { return currentScene; }
 private:
 	SceneManager() = default;
@@ -46,6 +55,8 @@ private:
 
 
 	Scene* currentScene = nullptr;
+	//SceneType可以取无吗？
+	SceneType nextScene = SceneType::None;
 	
 
 	Scene* tieleScene = nullptr;

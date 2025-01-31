@@ -14,7 +14,7 @@ Snake::Snake(Vector3 pos)
 
 	//headPos = { 0.0f,size.y / 2 };
 
-	spine = Chain(pos, nodeNum, nodeInterval, M_PI/4, M_PI/4);
+	spine = Chain(pos, nodeNum, nodeInterval, 2* M_PI, 2 * M_PI);
 
 
 	isEnableGravity = false;
@@ -22,22 +22,30 @@ Snake::Snake(Vector3 pos)
 
 	name = "Snake";
 
-	hurt_box = CollisionManager::Instance()->CreatCollisionBox(this);
-	hurt_box->setLayerSrc(CollisionLayer::Enemy);
-	hurt_box->addLayerDest(CollisionLayer::Map, [this]() {
-		});
-	hurt_box->addLayerDest(CollisionLayer::Player, [this]() {
-		});
+	//collisionbox
+	//hurt_box = CollisionManager::Instance()->CreatCollisionBox(this);
+	//hurt_box->setLayerSrc(CollisionLayer::Enemy);
+	//hurt_box->addLayerDest(CollisionLayer::Map, [this]() {
+	//	});
+	//hurt_box->addLayerDest(CollisionLayer::Player, [this]() {
+	//	});
+	//hurtBoxSize = { size.x,size.y };
 
-	hurtBoxSize = { size.x,size.y };
-
-
+	//stateMachine
 	stateMachine.RegisterState("Basic", new BasicState());
 	stateMachine.RegisterState("Jump", new JumpState());
+	stateMachine.RegisterState("Move", new MoveState());
+	stateMachine.RegisterState("CircleMove", new CircleMove());
+	stateMachine.RegisterState("UpHead",new UpHead());
 	stateMachine.SetEntry("Basic");
 
 
 
+}
+
+Snake::~Snake()
+{
+	ClearNodes();
 }
 
 
@@ -119,20 +127,14 @@ void Snake::Update()
 	spine.resolve(pos, toward);
 	Charactor::Update();
 	 
-	
-	//spine.resolve2D(pos,toward);
+
 	
 }
 
 void Snake::Draw(const Camera& camera)
 {
 	Object::Draw(camera);
-	//for (auto& node : body)
-	//{
-	//	Vector2 screenNodePos = Transform(node.pos, objectMatrix);
-	//	Novice::DrawEllipse(int(screenNodePos.x), int(screenNodePos.y), int(node.size.x), int(node.size.y), 0.0f, color, kFillModeSolid);
-	//}
-	//spine.display();
+
 #ifdef _DEBUG
 	ImGui::Begin("Snake");
 	ImGui::Text("pos: %.2f %.2f %.2f", pos.x, pos.y, pos.z);
@@ -153,12 +155,20 @@ void Snake::Draw(const Camera& camera)
 
 void Snake::ClearNodes()
 {
-	
+
 	for (auto& joint : spine.joints) {
 		ObjectManager::Instance()->RemoveObject(joint);
 	}
 	spine.joints.clear();
 	
+}
+
+
+void Snake::SetAngleConstraint(float azimuthalConstraint, float polarConstraint)
+{
+	//调整链条的角度约束
+	spine.azimuthalConstraint = azimuthalConstraint;
+	spine.polarConstraint = polarConstraint;
 }
 
 //void Snake::JumpTo(Vector3 targetPos)

@@ -117,6 +117,10 @@ inline Vector2 Transform(Vector2 vector, Matrix3x3 matrix) {
 	result.x = vector.x * matrix.m[0][0] + vector.y * matrix.m[1][0] + 1.0f * matrix.m[2][0];
 	result.y = vector.x * matrix.m[0][1] + vector.y * matrix.m[1][1] + 1.0f * matrix.m[2][1];
 	float w = vector.x * matrix.m[0][2] + vector.y * matrix.m[1][2] + 1.0f * matrix.m[2][2];
+	if (w == 0.0f) {
+		// Handle the error, possibly by logging or using a default value
+		w = 1.0f; // Example of handling
+	}
 	assert(w != 0.0f);
 	result.x /= w;
 	result.y /= w;
@@ -128,6 +132,10 @@ inline Vector2 TransformFrom3D(Vector3 vector, Matrix3x3 matrix,float heightscal
 	result.x = vector.x * matrix.m[0][0] + vector.y * matrix.m[1][0] + 1.0f * matrix.m[2][0];
 	result.y = vector.x * matrix.m[0][1] + vector.y * matrix.m[1][1] + 1.0f * matrix.m[2][1];
 	float w = vector.x * matrix.m[0][2] + vector.y * matrix.m[1][2] + 1.0f * matrix.m[2][2];
+	if (w == 0.0f) {
+		// Handle the error, possibly by logging or using a default value
+		w = 1.0f; // Example of handling
+	}
 	assert(w != 0.0f);
 	result.x /= w;
 	result.y /= w;

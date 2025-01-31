@@ -16,7 +16,7 @@ public:
 	//virtual void onExit() override;
 private:
 	Timer timer;
-	float totaltime = 1.0f;
+	float totaltime = 5.0f;
 	float passTime = 0.0f;
 
 	
@@ -55,5 +55,42 @@ public:
 private:
 	Vector3 targetPos;
 	float moveDistance = 400.0f;
+
+};
+
+class CircleMove : public StateNode
+{
+public:
+	CircleMove();
+	~CircleMove() = default;
+	void onEnter() override;
+	void onUpdate() override;
+	void onExit() override;
+};
+
+class UpHead : public StateNode
+{
+public:
+	UpHead();
+	~UpHead() = default;
+	void onEnter() override;
+	void onUpdate() override;
+	void onExit() override;
+private:
+	Vector3 startPos;
+	Vector3 targetPos;
+
+	Timer upTimer;//上げる
+	float upTime = 0.5f;
+	float upHeight = 200.0f;
+
+	Vector3 circleCenter;//圆心
+	Timer toCircleLineTimer;//到达圆形线
+	float toCircleLineTime = 0.2f;
+	float radius = 40.0f;//头部旋转半径
+
+	
+	bool isUpOver = false;
+	bool isFollowPlayer = false;
 
 };

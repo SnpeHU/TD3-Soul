@@ -10,11 +10,13 @@ public:
 
 	virtual void Input(char* keys, char* prekeys);
 	virtual void Update() override;//不含节点角色的更新
-	virtual void Draw(const Camera& camera) override;//目前只绘制影子
+	virtual void Draw(const Camera& camera) override;//无用
 
 	void SwitchState(const std::string& _id);
 
 	virtual void ClearNodes() {};
+
+	bool GetIsDead() const { return isDead; };//只用于判断玩家和蛇主体的死亡
 
 
 
@@ -25,7 +27,6 @@ protected:
 	Vector3 velocity = { 0.0f,0.0f,0.0f };;
 	float speed;
 
-	int color;
 
 
 

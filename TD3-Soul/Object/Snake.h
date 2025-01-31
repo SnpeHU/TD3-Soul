@@ -9,13 +9,15 @@ class Snake : public Charactor
 public:
 	Snake() = default;
 	Snake(Vector3 pos);
-	~Snake() = default;
+	~Snake();
 
 	virtual void Input(char* keys, char* prekeys) override;
 	void Update() override;
 	void Draw(const Camera& camera) override;
 
 	void ClearNodes() override;
+
+	void SetAngleConstraint(float azimuthalConstraint, float polarConstraint);
 
 private:
 

@@ -49,5 +49,6 @@ void TestScene::Draw(const Camera& camera)
 
 void TestScene::onExit()
 {
+
 }
 

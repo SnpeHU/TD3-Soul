@@ -19,13 +19,19 @@ public:
 	//ObjectManagerでレンダリングされますが、ここでは無視
 	void Draw(/*const Camera& camera*/);
 
+
+
 	void CheckCharactorsLive();
 	void RespwanPlayer();
+	void RespwanPlayer(Vector3 pos);
+	void RespwanSnake();
+	void RespwanAll();
+	void RemoveAllCharactors();
 
 	//void SetPlayer(std::shared_ptr<Charactor> _player) { player = _player; };
-	std::shared_ptr<Charactor> GetPlayer() { return player; };
+	std::shared_ptr<Player> GetPlayer() { return player; };
 
-	std::shared_ptr<Charactor> GetSnake() { return snake; };
+	std::shared_ptr<Snake> GetSnake() { return snake; };
 
 
 private:
@@ -35,8 +41,8 @@ private:
 private:
 	static CharactorManager* manager;
 
-	std::shared_ptr<Charactor> player = nullptr;
-	std::shared_ptr<Charactor> snake = nullptr;
+	std::shared_ptr<Player> player = nullptr;
+	std::shared_ptr<Snake> snake = nullptr;
 	
 	//Charactor* snake = nullptr;
 };

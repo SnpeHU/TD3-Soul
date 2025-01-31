@@ -15,5 +15,7 @@ private:
 	//Vector2 size;
 	Vector2 drawPos;
 
+	int bordercolor;
+	int boderwidth;
 
 };

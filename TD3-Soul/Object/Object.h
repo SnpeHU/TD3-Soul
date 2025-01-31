@@ -24,22 +24,24 @@ public:
 	bool GetCanRemove() const { return isCanRemove; };
 	void SetCanRemove(bool _isCanRemove) { isCanRemove = _isCanRemove; };
 
-	//Vector2 get_logic_center() const
-	//{
-	//	return Vector2(pos.x, pos.y + hurtBoxSize.y / 2);
-	//}
+	Vector2 get_logic_center2D() const
+	{
+		return Vector2(pos.x, pos.y + hurtBoxSize.y / 2);
+	}
 
 	Vector3 get_logic_center() const
 	{
 		return Vector3(pos.x, pos.y + hurtBoxSize.y / 2,pos.z);
 	}
+
+	//gethurtbox
+	CollisionBox* getHurtBox() { return hurt_box; };
+
 	
 public:
 	string name = "none";
 
 protected:
-
-	
 
 	Vector3 pos;
 	Vector2 size;
@@ -54,9 +56,9 @@ protected:
 	bool isShadow = true;
 
 
+	int color = 0x00FFFFFF;
 
-
-	Vector2 shadowSize;
+	Vector2 shadowSize = { 0.0f,0.0f };
 	//影子颜色为黑色
 	int shadowColor = 0x00000030;
 

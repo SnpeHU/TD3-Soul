@@ -17,9 +17,9 @@ void Object::Draw(const Camera& camera)
 {
 	//(void)camera;
 	objectMatrix = camera.GetObjectMatrix(Vector2(pos.x, pos.y), 0.0f);
-	Vector2 screenPos = Transform(Vector2(0.0f,0.0f), objectMatrix);
+	Vector2 shadowPos = Transform(Vector2(0.0f, 0.0f), objectMatrix);
 
-	Novice::DrawEllipse(int(screenPos.x), int(screenPos.y), int(shadowSize.x), int(shadowSize.y), 0.0f, shadowColor, kFillModeSolid);
+	Novice::DrawEllipse(int(shadowPos.x), int(shadowPos.y), int(shadowSize.x), int(shadowSize.y), 0.0f, shadowColor, kFillModeSolid);
 }
 
 void Object::DrawDebug(const Camera& camera)

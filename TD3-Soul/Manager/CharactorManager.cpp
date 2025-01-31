@@ -1,6 +1,6 @@
 #include "CharactorManager.h"
 #include "ObjectManager.h"
-
+extern Camera m_camera;
 CharactorManager* CharactorManager::manager = nullptr;
 
 CharactorManager* CharactorManager::Instance()
@@ -27,18 +27,21 @@ void CharactorManager::Init()
 	player = newPlayer;
 	ObjectManager::Instance()->AddObject(newPlayer);
 
-	auto newSnake = std::make_shared<Snake>(Vector3(0, 0, 0));
+	auto newSnake = std::make_shared<Snake>(Vector3(0, -800, 0));
 	snake = newSnake;
 	ObjectManager::Instance()->AddObject(newSnake);
 }
 
 void CharactorManager::onInput(char* keys, char* prekeys)
 {
-	player->Input(keys, prekeys);
+	if (player)
+	{
+		player->Input(keys, prekeys);
+	}
 	//snake->Input(keys, prekeys);
 	if (keys[DIK_R] && !prekeys[DIK_R])
 	{
-		RespwanPlayer();
+		RespwanAll();
 	}
 }
 
@@ -68,20 +71,61 @@ void CharactorManager::CheckCharactorsLive()
 
 void CharactorManager::RespwanPlayer()
 {
-	ObjectManager::Instance()->RemoveObject(player);
+	if (player)
+	{
+		ObjectManager::Instance()->RemoveObject(player);
+	}
+	auto newPlayer = std::make_shared<Player>(Vector3(0, 0, 0));
+	player = newPlayer;
+	ObjectManager::Instance()->AddObject(newPlayer);
+}
+
+void CharactorManager::RespwanPlayer(Vector3 pos)
+{
+	if (player)
+	{
+		ObjectManager::Instance()->RemoveObject(player);
+	}
+	auto newPlayer = std::make_shared<Player>(pos);
+	player = newPlayer;
+	ObjectManager::Instance()->AddObject(newPlayer);
+}
+
+void CharactorManager::RespwanSnake()
+{
+	if (snake)
+	{
+		ObjectManager::Instance()->RemoveObject(snake);
+	}
+	auto newSnake = std::make_shared<Snake>(Vector3(0, 30, 0));
+	snake = newSnake;
+	ObjectManager::Instance()->AddObject(newSnake);
+}
+
+void CharactorManager::RespwanAll()
+{
+	if (player)
+	{
+		ObjectManager::Instance()->RemoveObject(player);
+	}
+	
 	auto newPlayer = std::make_shared<Player>(Vector3(0, 0, 0));
 	player = newPlayer;
 
 	if (snake) {
-		snake->ClearNodes(); // 清理蛇的Node对象
 		ObjectManager::Instance()->RemoveObject(snake);
 	}
-	auto newSnake = std::make_shared<Snake>(Vector3(0, 0, 0));
+	auto newSnake = std::make_shared<Snake>(Vector3(0, 30, 0));
 	snake = newSnake;
 
 
 	ObjectManager::Instance()->AddObject(newPlayer);
 	ObjectManager::Instance()->AddObject(newSnake);
+	
+}
+
+void CharactorManager::RemoveAllCharactors()
+{
 }
 
 CharactorManager::CharactorManager()

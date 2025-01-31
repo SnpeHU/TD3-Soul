@@ -42,8 +42,10 @@ void Charactor::Update()
 	{
 		isOnGround = false;
 	}
-
-	hurt_box->setPos(get_logic_center());
+	if (hurt_box)
+	{
+		hurt_box->setPos(get_logic_center());
+	}
 	
 	if (shadowSize.x < 0.0f)
 	{
@@ -58,12 +60,6 @@ void Charactor::Draw(const Camera& camera)
 {
 
 	(void)camera;
-	Vector2 screenPos = Transform(Vector2(0, 0), objectMatrix);
-	
-
-
-	
-	
 }
 
 

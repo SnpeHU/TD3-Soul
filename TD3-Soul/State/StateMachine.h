@@ -2,7 +2,7 @@
 #include "StateNode.h"
 #include <string>
 #include <unordered_map>
-
+class Object;
 class StateMachine
 {
 public:
@@ -10,6 +10,7 @@ public:
 	~StateMachine() = default;
 
 	void onUpdate();
+
 	void SetEntry(const std::string& id);
 	void SwitchTo(const std::string& id);
 	void RegisterState(const std::string& id, StateNode* state);
@@ -18,9 +19,11 @@ public:
 
 
 
+
 private:
 	bool needInit = true;
 	StateNode* currentState = nullptr;
 	std::unordered_map<std::string, StateNode*> statePool;
+
 
 };
