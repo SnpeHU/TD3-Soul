@@ -16,6 +16,6 @@ public:
 	void onExit() override;
 
 private:
-	BlockEmitter* blockEmitter = nullptr;
-	CircleEmitter* circleEmitter = nullptr;
+	//BlockEmitter* blockEmitter = nullptr;
+	//CircleEmitter* circleEmitter = nullptr;
 };

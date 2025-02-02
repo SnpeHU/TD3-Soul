@@ -26,7 +26,9 @@ void SceneManager::Init()
 	//clearSCene = new ClearScene();
 	testScene = new TestScene();
 	stageScene.push_back(new Game());
-	setCurrentScene(tieleScene);
+	setCurrentScene(stageScene[0]);
+
+
 }
 
 
@@ -38,12 +40,11 @@ void SceneManager::onInput(char* keys, char* prekeys)
 
 void SceneManager::Update()
 {
-	currentScene->Update();
-	if (nextScene != SceneType::None)
+	if (isSwitchingScene)
 	{
-		switchScene(nextScene);
-		nextScene = SceneType::None;
+		switchSceneTimer.on_update(1.0f / 60.0f);
 	}
+	currentScene->Update();
 }
 
 void SceneManager::Draw(const Camera& camera)
@@ -78,4 +79,35 @@ void SceneManager::switchScene(SceneType type)
 		break;
 	}
 	currentScene->onEnter();
+}
+
+void SceneManager::DelayedSwitchScene(SceneType type, float delay)
+{
+	if (isSwitchingScene)
+	{
+		return;
+	}
+
+	isSwitchingScene = true;
+	switchSceneTimer.set_wait_time(delay);
+	switchSceneTimer.set_one_shot(true);
+	switchSceneTimer.set_on_timeout([this, type]() {
+		switchScene(type);
+		isSwitchingScene = false;
+		});
+	switchSceneTimer.restart();
+}
+
+SceneManager::~SceneManager()
+{
+
+		delete tieleScene;
+		delete clearSCene;
+		delete testScene;
+		for (Scene* scene : stageScene)
+		{
+			delete scene;
+		}
+		stageScene.clear();
+
 }

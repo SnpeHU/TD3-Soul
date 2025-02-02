@@ -7,17 +7,25 @@ class Snake : public Charactor
 {
 
 public:
+	//enum class SnakeState
+	//{
+	//	OnR
+	//};
+
 	Snake() = default;
 	Snake(Vector3 pos);
-	~Snake();
+	~Snake() override;
 
 	virtual void Input(char* keys, char* prekeys) override;
 	void Update() override;
 	void Draw(const Camera& camera) override;
 
+	void SetNodeEnableGravity(bool flag);
 	void ClearNodes() override;
 
 	void SetAngleConstraint(float azimuthalConstraint, float polarConstraint);
+
+
 
 private:
 
@@ -41,7 +49,7 @@ private:
 
 	//bool isJumpButton = false;
 	float jumpForce = 10.0f;
-	//float gravity = 0.8f;
+
 
 
 

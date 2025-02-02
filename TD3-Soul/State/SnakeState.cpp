@@ -1,7 +1,9 @@
 #include "SnakeState.h"
 #include "Object/Snake.h"
 #include "Manager/CharactorManager.h"
-
+#include "Object/Beam.h"
+#include "Camera.h"
+extern Camera m_camera;
 
 #pragma region BasicState
 BasicState::BasicState()
@@ -142,6 +144,7 @@ void UpHead::onEnter()
 	upTimer.restart();
 	toCircleLineTimer.restart();
 	startPos = CharactorManager::Instance()->GetSnake()->GetPos();
+	CharactorManager::Instance()->GetSnake()->SetNodeEnableGravity(false);
 	targetPos = startPos;
 	targetPos.z += upHeight;
 	circleCenter = targetPos;
@@ -182,9 +185,13 @@ void UpHead::onUpdate()
 	}
 	else
 	{
-		Vector3 dir = (CharactorManager::Instance()->GetPlayer()->GetPos() - startPos).normalize();
-		CharactorManager::Instance()->GetSnake()->SetPos(Vector3(circleCenter.x + dir.x * radius, circleCenter.y + dir.y * radius, upHeight));
+		CharactorManager::Instance()->GetSnake()->SwitchState("BeamAttack");
 	}
+	//else
+	//{
+	//	Vector3 dir = (CharactorManager::Instance()->GetPlayer()->GetPos() - startPos).normalize();
+	//	CharactorManager::Instance()->GetSnake()->SetPos(Vector3(circleCenter.x + dir.x * radius, circleCenter.y + dir.y * radius, upHeight));
+	//}
 
 }
 
@@ -192,5 +199,80 @@ void UpHead::onExit()
 {
 	isUpOver = false;
 	isFollowPlayer = false;
+}
+#pragma endregion
+
+#pragma region PushHead
+PushHead::PushHead()
+{
+	name = "PushHead";
+}
+
+void PushHead::onEnter()
+{
+	Snake* snake = CharactorManager::Instance()->GetSnake();
+	Vector3 dir = (CharactorManager::Instance()->GetPlayer()->GetPos() - snake->GetPos()).normalize();
+	snake->SetVelocity(dir * pushSpeed);
+	snake->SetEnableResistance(true);
+
+
+}
+
+void PushHead::onUpdate()
+{
+	if (!isChangeGravity)
+	{
+		if(CharactorManager::Instance()->GetSnake()->GetIsOnGround())
+		{
+			CharactorManager::Instance()->GetSnake()->SetNodeEnableGravity(true);
+			m_camera.Shake(6.0f, 0.3f);
+			isChangeGravity = true;
+		}
+	}
+	if (CharactorManager::Instance()->GetSnake()->GetVelocity().length() < 3.0f)
+	{
+		CharactorManager::Instance()->GetSnake()->SwitchState("Basic");
+	}
+}
+
+void PushHead::onExit()
+{
+	//CharactorManager::Instance()->GetSnake()->SetEnableResistance(false);
+	isChangeGravity = false;
+	
+}
+#pragma endregion
+
+#pragma region BeamAttack
+BeamAttack::BeamAttack()
+{
+	name = "BeamAttack";
+}
+
+void BeamAttack::onEnter()
+{
+	Vector3 endPos = CharactorManager::Instance()->GetPlayer()->GetPos();
+	Vector3 startPos = CharactorManager::Instance()->GetSnake()->GetPos();
+	beam = new Beam(endPos, startPos, CharactorManager::Instance()->GetPlayer());
+	ObjectManager::Instance()->AddObjectBy(beam);
+
+	attackTimer.set_one_shot(true);
+	attackTimer.set_wait_time(attackTime);
+	attackTimer.set_on_timeout([&]()
+		{
+			CharactorManager::Instance()->GetSnake()->SwitchState("PushHead");
+			attackTimer.restart();	
+		});
+}
+
+void BeamAttack::onUpdate()
+{
+	attackTimer.on_update(deltaTime);
+}
+
+void BeamAttack::onExit()
+{
+	beam->SetCanRemove(true);
+	beam = nullptr;
 }
 #pragma endregion

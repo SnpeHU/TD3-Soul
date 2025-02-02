@@ -18,6 +18,9 @@ public:
 	void SetVelocity(Vector3 _velocity) { velocity = _velocity; };
 	Vector3 GetVelocity() const { return velocity; };
 
+	void SetAcceleration(Vector3 _acceleration) { acceleration = _acceleration; };
+	Vector3 GetAcceleration() const { return acceleration; };
+
 
 
 

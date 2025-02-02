@@ -10,6 +10,12 @@ public:
 	void Update() override;
 	void Draw(const Camera& camera) override;
 
+	void setCanHurt(bool flag) { isCanHurt = flag; };
+	bool getCanHurt() const { return isCanHurt; };
+
+	void setisDestroyed(bool flag) { isDestroyed = flag; };
+	bool getisDestroyed() const { return isDestroyed; };
+
 private:
 	
 	//Vector2 size;
@@ -17,5 +23,8 @@ private:
 
 	int bordercolor;
 	int boderwidth;
+
+	bool isCanHurt = false;
+	bool isDestroyed = false;
 
 };

@@ -101,7 +101,11 @@ public:
 		return Vector2(cos(angle), sin(angle));
 	}
 
-
+	int GetColor(unsigned int red, unsigned int green, unsigned int blue, int _alpha)
+	{
+		int color;
+		return color = (red << 24) | (green << 16) | (blue << 8) | _alpha;
+	}
 
 };
 

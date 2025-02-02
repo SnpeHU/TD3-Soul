@@ -1,6 +1,7 @@
 #include "PlayerBullet.h"
 #include "Manager/CharactorManager.h"
 #include "State/PlayerBulletState.h"
+#include "Emitter/BlockEmiiter.h"	
 #ifdef _DEBUG
 #include<imgui.h>
 #endif // DEBUG
@@ -10,19 +11,14 @@ PlayerBullet::PlayerBullet(Vector3 pos)
 	toward = { 1.0f,0.0f,0.0f };
 	size = { 10.0f,10.0f };
 	speed = 4.0f;
-	color = BLACK;
+	color = 0x717170FF;
 
 	isDeBug = true;
 	name = "PlayerBullet";
 	//collisionbox
 	hurt_box = CollisionManager::Instance()->CreatCollisionBox(this);
 	hurt_box->setLayerSrc(CollisionLayer::PlayerBullet);
-	hurt_box->addLayerDest(CollisionLayer::Map, [this]() {
-		isRebound = false;
-		});
-	hurt_box->addLayerDest(CollisionLayer::Enemy, [this]() {
-		isRebound = false;
-		});
+
 	hurtBoxSize = { size.x * 2 - 3,size.y *2 - 3 };
 	hurt_box->setSize(hurtBoxSize);
 	hurt_box->setEnabled(false);
@@ -32,6 +28,17 @@ PlayerBullet::PlayerBullet(Vector3 pos)
 	stateMachine.RegisterState("Aim", new AimState(this));
 	stateMachine.RegisterState("Shooted", new ShootedState(this));
 	stateMachine.SetEntry("Follow");
+
+	//tailEmitter = std::make_unique<BlockEmitter>(pos, 0.02f, Vector2(5.0f, 5.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, 0.0f, 0xFFFFFFFF);
+	tailEmitter = new BlockEmitter(pos, 0.03f, Vector2(15.0f, 15.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.5f, 0.0f, 0x717170FF);
+	//tailEmitter = new BlockEmitter(Vector3(0.0f, 30.0f, 0.0f), 0.5f);
+	//tailEmitter->SetEnable(true);
+}
+
+PlayerBullet::~PlayerBullet()
+{
+	delete tailEmitter;
+	tailEmitter = nullptr;
 }
 
 void PlayerBullet::Update()
@@ -43,10 +50,6 @@ void PlayerBullet::Update()
 	int mouseX, mouseY;
 	Vector2 dir;
 
-
-
-
-
 	stateMachine.onUpdate();
 
 	switch (curstate)
@@ -57,14 +60,12 @@ void PlayerBullet::Update()
 		rotateAngle += 0.1f; 
 		pos.x = rotateCenter.x + rotateRadius * cos(rotateAngle);
 		pos.y = rotateCenter.y + rotateRadius * sin(rotateAngle);
-		pos.z = 0.0f;
+		pos.z = 20.0f;
 
 		if (rotateAngle > 720.0f)
 		{
 			rotateAngle = 0.0f;
 		}
-
-		
 
 		break;
 	case PlayerBullet::BulletState::Aim:
@@ -104,6 +105,31 @@ void PlayerBullet::Update()
 	default:
 		break;
 	}
+	
+	tailEmitter->Update();
+	tailEmitter->SetPos(pos);
+
+
+	//当速度大于5时，可以造成伤害，否则不造成伤害
+	if (velocity.length() > 5.0f)
+	{
+		isCanDamage = true;
+		if(!tailEmitter->GetEnable())
+		{
+			//tailEmitter->SetEnable(true);
+		}
+	}
+	else
+	{
+		isCanDamage = false;
+		if (tailEmitter->GetEnable())
+		{
+			//tailEmitter->SetEnable(false);
+		}
+	}
+
+	//collisionbox
+
 		if (hurt_box)
 		{
 			hurt_box->setPos(get_logic_center());
@@ -131,6 +157,7 @@ void PlayerBullet::Draw(const Camera& camera)
 	ImGui::Text("isCanPick: %d", isCanPick);
 	ImGui::Text("isRebound: %d", isRebound);
 	ImGui::Text("isCanShoot: %d", isCanShoot);
+	ImGui::Text("isCanDamage: %d", isCanDamage);
 
 
 	

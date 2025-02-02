@@ -13,6 +13,7 @@ void FollowState::onEnter()
 	owner->getHurtBox()->setEnabled(false);
 	owner->switchState(PlayerBullet::BulletState::FollowPlayer);
 	owner->setIsCanBack(false);
+	owner->SetVelocity({ 0.0f,0.0f,0.0f });
 }
 void FollowState::onUpdate()
 {
@@ -97,6 +98,7 @@ void ShootedState::onUpdate()
 void ShootedState::onExit()
 {
 	pickTimer.restart();
+	
 	owner->setIsCanPick(false);
 	owner->setIsRebound(true);
 }

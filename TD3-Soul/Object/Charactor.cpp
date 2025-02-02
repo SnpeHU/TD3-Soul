@@ -22,11 +22,37 @@ void Charactor::Input(char* keys, char* prekeys)
 }
 void Charactor::Update()
 {
+	if (isOnGround)
+	{
+		if (isEnableResistance)
+		{
+			acceleration.x = velocity.x * (-kResistance);
+			acceleration.y = velocity.y * (-kResistance);
+		}
+	}
+
 	if (isEnableGravity)
 	{
 		acceleration.z -= gravity;
 	}
-	velocity.z += acceleration.z;
+
+	//if (acceleration.length() < 0.001f)
+	//{
+	//	acceleration.x = 0.0f;
+	//	acceleration.y = 0.0f;
+	//	acceleration.z = 0.0f;
+	//}
+
+	velocity += acceleration;
+
+	if (velocity.length() < 0.05f)
+	{
+		velocity.x = 0;
+		velocity.y = 0;
+		velocity.z = 0;
+	}
+
+
 	pos += velocity;
 
 	
@@ -36,6 +62,7 @@ void Charactor::Update()
 	{
 		pos.z = 0.0f;
 		velocity.z = 0.0f;
+		acceleration.z = 0.0f;
 		isOnGround = true;
 	}
 	else

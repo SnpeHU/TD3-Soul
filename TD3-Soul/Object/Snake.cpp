@@ -8,9 +8,11 @@ Snake::Snake(Vector3 pos)
 {
 	this->pos = pos;
 	toward = { 1.0f,0.0f ,0.0f};
-	size = { 40.0f,40.0f };
+	size = { 30.0f,30.0f };
 	speed = 3.0f;
 	color = 0x4E7A70FF;
+	nodeNum = 10;
+	nodeInterval = 40.0f;
 
 	//headPos = { 0.0f,size.y / 2 };
 
@@ -18,18 +20,20 @@ Snake::Snake(Vector3 pos)
 
 
 	isEnableGravity = false;
+	kResistance = 0.02f;
 	isDeBug = true;
 
 	name = "Snake";
 
 	//collisionbox
-	//hurt_box = CollisionManager::Instance()->CreatCollisionBox(this);
-	//hurt_box->setLayerSrc(CollisionLayer::Enemy);
+	hurt_box = CollisionManager::Instance()->CreatCollisionBox(this);
+	hurt_box->setLayerSrc(CollisionLayer::Enemy);
 	//hurt_box->addLayerDest(CollisionLayer::Map, [this]() {
 	//	});
 	//hurt_box->addLayerDest(CollisionLayer::Player, [this]() {
 	//	});
-	//hurtBoxSize = { size.x,size.y };
+	hurtBoxSize = { size.x * 2 - size.x / 4,size.y };
+	hurt_box->setSize(hurtBoxSize);
 
 	//stateMachine
 	stateMachine.RegisterState("Basic", new BasicState());
@@ -37,6 +41,8 @@ Snake::Snake(Vector3 pos)
 	stateMachine.RegisterState("Move", new MoveState());
 	stateMachine.RegisterState("CircleMove", new CircleMove());
 	stateMachine.RegisterState("UpHead",new UpHead());
+	stateMachine.RegisterState("PushHead", new PushHead());
+	stateMachine.RegisterState("BeamAttack", new BeamAttack());
 	stateMachine.SetEntry("Basic");
 
 
@@ -108,23 +114,28 @@ void Snake::Input(char* keys, char* prekeys)
 void Snake::Update()
 {
 
-	Vector3 dir = {float(isRight - isLeft), float(isForward - isBack) ,float(isUp - isDown)};
-	if (dir.x != 0 || dir.y != 0 || dir.z !=0)
-	{
-		dir = dir.normalize();
-		toward = dir;
-		velocity = dir * speed;
-	}
-	else
-	{
-		velocity = { 0.0f,0.0f,0.0f };
-	}
+	//Vector3 dir = {float(isRight - isLeft), float(isForward - isBack) ,float(isUp - isDown)};
+	//if (dir.x != 0 || dir.y != 0 || dir.z !=0)
+	//{
+	//	dir = dir.normalize();
+	//	toward = dir;
+	//	velocity = dir * speed;
+	//}
+	//else
+	//{
+	//	velocity = { 0.0f,0.0f,0.0f };
+	//}
+
 
 
 
 	stateMachine.onUpdate();
 
+
 	spine.resolve(pos, toward);
+	spine.upDateCanHurt();
+
+
 	Charactor::Update();
 	 
 
@@ -140,7 +151,10 @@ void Snake::Draw(const Camera& camera)
 	ImGui::Text("pos: %.2f %.2f %.2f", pos.x, pos.y, pos.z);
 	ImGui::Text("toward: %.2f %.2f %.2f", toward.x, toward.y,toward.z);
 	ImGui::Text("velocity: %.2f %.2f %.2f", velocity.x, velocity.y, velocity.z);
+	ImGui::Text("acceleration: %.2f %.2f %.2f", acceleration.x, acceleration.y, acceleration.z);
 	ImGui::Text("isOnGround: %d", isOnGround);
+	ImGui::Text("isEnableGravity: %d", isEnableGravity);
+	ImGui::Text("isEnableResistance: %d", isEnableResistance);
 	ImGui::DragFloat("pos.x", &pos.x, 1.0f, -800.0f, 800.0f);
 	ImGui::DragFloat("pos.y", &pos.y, 1.0f, -600.0f, 600.0f);
 	ImGui::DragFloat("pos.z", &pos.z, 1.0f, 0.0f, 600.0f);
@@ -151,6 +165,11 @@ void Snake::Draw(const Camera& camera)
 
 #endif
 	
+}
+
+void Snake::SetNodeEnableGravity(bool flag)
+{
+	spine.SetEnableGravity(flag);
 }
 
 void Snake::ClearNodes()

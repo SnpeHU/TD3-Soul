@@ -7,22 +7,6 @@
 #endif // DEBUG
 
 #define deltaTime (1.0f/60.0f)
-Player::Player()
-{
-	pos = { 0.0f,0.0f ,0.0f};
-	toward = { 0.0f,0.0f ,0.0f};
-	size = { 32.0f,32.0f };
-	speed = 8.0f;
-
-	leftTop = { -size.x / 2,size.y };
-	
-
-	isDeBug = true;
-
-	name = "Player";
-
-
-}
 
 Player::Player(Vector3 _pos)
 {
@@ -44,15 +28,14 @@ Player::Player(Vector3 _pos)
 	hp = maxHp;
 	isDead = false;
 
-	auto newPlayerBullet = std::make_shared<PlayerBullet>(pos);
-	playerBullet = newPlayerBullet;
-	ObjectManager::Instance()->AddObject(newPlayerBullet);
+	auto newPlayerBullet = std::make_unique<PlayerBullet>(pos);
+	playerBullet = newPlayerBullet.get();
+	ObjectManager::Instance()->AddObject(std::move(newPlayerBullet));
 
 	//collisionbox
 	hurt_box = CollisionManager::Instance()->CreatCollisionBox(this);
 	hurt_box->setLayerSrc(CollisionLayer::Player);
-	hurt_box->addLayerDest(CollisionLayer::Map, [this]() {
-		});
+
 	hurt_box->addLayerDest(CollisionLayer::Enemy, [this]() {
 
 		if (isInvincible)
@@ -316,6 +299,8 @@ void Player::Draw(const Camera& camera)
 		ImGui::Text("isRolling: %d", isRolling);
 		ImGui::Text("isAiming: %d", isAiming);
 		ImGui::Text("isHaveBullet: %d", isHaveBullet);
+		ImGui::Text("hp: %d", hp);
+		ImGui::Text("isInvincible: %d", isInvincible);
 
 
 		//ImGui::DragFloat("height", &height, 0.1f, 0.0f, 100.0f);

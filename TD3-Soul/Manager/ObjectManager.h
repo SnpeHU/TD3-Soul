@@ -12,8 +12,10 @@ public:
 	void Update();
 	void Draw(const Camera& camera);
 
-	void AddObject(std::shared_ptr<Object> object);
-	void RemoveObject(std::shared_ptr<Object> object);
+	void AddObject(std::unique_ptr<Object> object);
+	void AddObjectBy(Object* object);
+	//void RemoveObject(std::unique_ptr<Object> object);
+	void RemoveObject(Object* object);
 	void RemoveAllObject();
 private:
 	ObjectManager() = default;
@@ -22,5 +24,7 @@ private:
 private:
 	static ObjectManager* manager;
 
-	std::vector<std::shared_ptr<Object>> objects;
+	std::vector<std::unique_ptr<Object>> objects;
+	//std::vector<Object*> objects;
+
 };

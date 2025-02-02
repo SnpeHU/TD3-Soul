@@ -23,13 +23,13 @@ void CharactorManager::DestroyInstance()
 
 void CharactorManager::Init()
 {
-	auto newPlayer = std::make_shared<Player>(Vector3(0,0,0));
-	player = newPlayer;
-	ObjectManager::Instance()->AddObject(newPlayer);
+	auto newPlayer = std::make_unique<Player>(Vector3(0,0,0));
+	player = newPlayer.get();
+	ObjectManager::Instance()->AddObject(std::move(newPlayer));
 
-	auto newSnake = std::make_shared<Snake>(Vector3(0, -800, 0));
-	snake = newSnake;
-	ObjectManager::Instance()->AddObject(newSnake);
+	auto newSnake = std::make_unique<Snake>(Vector3(0, -800, 0));
+	snake = newSnake.get();
+	ObjectManager::Instance()->AddObject(std::move(newSnake));
 }
 
 void CharactorManager::onInput(char* keys, char* prekeys)
@@ -60,12 +60,12 @@ void CharactorManager::CheckCharactorsLive()
     if (player && player->GetCanRemove())
     {
         ObjectManager::Instance()->RemoveObject(player);
-        player.reset();
+		player = nullptr;
     }
     if (snake && snake->GetCanRemove())
     {
         ObjectManager::Instance()->RemoveObject(snake);
-        snake.reset();
+		snake = nullptr;
     }
 }
 
@@ -75,9 +75,9 @@ void CharactorManager::RespwanPlayer()
 	{
 		ObjectManager::Instance()->RemoveObject(player);
 	}
-	auto newPlayer = std::make_shared<Player>(Vector3(0, 0, 0));
-	player = newPlayer;
-	ObjectManager::Instance()->AddObject(newPlayer);
+	auto newPlayer = std::make_unique<Player>(Vector3(0, 0, 0));
+	player = newPlayer.get();
+	ObjectManager::Instance()->AddObject(std::move(newPlayer));
 }
 
 void CharactorManager::RespwanPlayer(Vector3 pos)
@@ -86,9 +86,9 @@ void CharactorManager::RespwanPlayer(Vector3 pos)
 	{
 		ObjectManager::Instance()->RemoveObject(player);
 	}
-	auto newPlayer = std::make_shared<Player>(pos);
-	player = newPlayer;
-	ObjectManager::Instance()->AddObject(newPlayer);
+	auto newPlayer = std::make_unique<Player>(pos);
+	player = newPlayer.get();
+	ObjectManager::Instance()->AddObject(std::move(newPlayer));
 }
 
 void CharactorManager::RespwanSnake()
@@ -97,9 +97,9 @@ void CharactorManager::RespwanSnake()
 	{
 		ObjectManager::Instance()->RemoveObject(snake);
 	}
-	auto newSnake = std::make_shared<Snake>(Vector3(0, 30, 0));
-	snake = newSnake;
-	ObjectManager::Instance()->AddObject(newSnake);
+	auto newSnake = std::make_unique<Snake>(Vector3(0, -200, 0));
+	snake = newSnake.get();
+	ObjectManager::Instance()->AddObject(std::move(newSnake));
 }
 
 void CharactorManager::RespwanAll()
@@ -109,23 +109,34 @@ void CharactorManager::RespwanAll()
 		ObjectManager::Instance()->RemoveObject(player);
 	}
 	
-	auto newPlayer = std::make_shared<Player>(Vector3(0, 0, 0));
-	player = newPlayer;
+	//auto newPlayer = std::make_unique<Player>(Vector3(0, 0, 0));
+	//player = newPlayer.get();
 
 	if (snake) {
 		ObjectManager::Instance()->RemoveObject(snake);
 	}
-	auto newSnake = std::make_shared<Snake>(Vector3(0, 30, 0));
-	snake = newSnake;
+	auto newSnake = std::make_unique<Snake>(Vector3(0, -200, 0));
+	snake = newSnake.get();
 
+	player = new Player(Vector3(0, 0, 0));
 
-	ObjectManager::Instance()->AddObject(newPlayer);
-	ObjectManager::Instance()->AddObject(newSnake);
+	ObjectManager::Instance()->AddObjectBy(player);
+	ObjectManager::Instance()->AddObject(std::move(newSnake));
 	
 }
 
 void CharactorManager::RemoveAllCharactors()
 {
+	if (player)
+	{
+		ObjectManager::Instance()->RemoveObject(player);
+		player = nullptr;
+	}
+	if (snake)
+	{
+		ObjectManager::Instance()->RemoveObject(snake);
+		snake = nullptr;
+	}
 }
 
 CharactorManager::CharactorManager()
@@ -137,11 +148,11 @@ CharactorManager::~CharactorManager()
 	if (player)
 	{
 		ObjectManager::Instance()->RemoveObject(player);
-		player.reset();
+		player = nullptr;
 	}
 	if (snake)
 	{
 		ObjectManager::Instance()->RemoveObject(snake);
-		snake.reset();
+		snake = nullptr;
 	}
 }

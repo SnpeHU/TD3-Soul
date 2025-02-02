@@ -27,7 +27,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	char preKeys[256] = {0};
 
 	
-	int backColor = 0xEFF0E6FF;
+	
 
 	// シーンマネージャーの初期化
 	SceneManager::Instance()->Init();
@@ -55,7 +55,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
-		Novice::DrawBox(0, 0, (int)windowWidth, (int)windowHeight, 0.0f, backColor, kFillModeSolid);
+		
 		SceneManager::Instance()->Draw(m_camera);
 
 
@@ -64,6 +64,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		ImGui::Text("SceneName:%s",(SceneManager::Instance()->getCurrentScene()->s_name).c_str());
 		ImGui::End();
 
+		ImGui::Begin("Camera");
+		ImGui::Text("pos: %.2f %.2f", m_camera.GetPos().x, m_camera.GetPos().y);
+		ImGui::Text("scale: %.2f", m_camera.GetScale());
+		ImGui::End();
 #endif
 
 

@@ -12,7 +12,7 @@
 
 class Chain {
 public:
-    std::vector<std::shared_ptr<Node>> joints; //关节
+    std::vector<Node*> joints; //关节
     //std::vector<Node> joints; //关节的位置
 	float linkSize; //关节之间的间距离
 
@@ -31,20 +31,20 @@ public:
         this->polarConstraint = polarConstraint;
         
 		//初始化关节，并将其添加到链条中，每个关节由ObjectManager管理
-		joints.push_back(std::make_shared<Node>(origin));
+		joints.push_back((new Node(origin)));
 		
 		//angles.push_back(0.0f);
         angles.push_back({ 0.0f, 0.0f });
         for (int i = 1; i < jointCount; i++) {
-			joints.push_back(std::make_shared<Node>(Vector3::add(joints[i-1]->GetPos(),Vector3(0,this->linkSize,0))));
-			//angles.push_back(0.0f);
+			//joints.push_back(std::make_shared<Node>(Vector3::add(joints[i-1]->GetPos(),Vector3(this->linkSize,0,0))));
+			joints.push_back((new Node(Vector3::add(joints[i - 1]->GetPos(), Vector3(this->linkSize, 0, 0)))));
             angles.push_back({ 30.0f, 0.0f });
         }
 
 		//添加到ObjectManager
         for (auto& joint : joints)
         {
-			ObjectManager::Instance()->AddObject(joint);
+			ObjectManager::Instance()->AddObjectBy(joint);
         }
 
     }
@@ -52,6 +52,10 @@ public:
 	//通过一个点的位置，处理链条
     void resolve(Vector3 pos,Vector3 toward) {
 		Vector3 p = pos;
+
+
+
+
 		//计算toward的方位角和极角
 		auto [toward_a, toward_p] = calculateAngles(toward);
         auto [azimuthal, polar] = calculateAngles(Vector3::sub(toward, joints[0]->GetPos())); // 计算第一个关节与给定位置之间的角度
@@ -71,6 +75,8 @@ public:
         ImGui::Begin("Chain");
 		for (int i = 0; i < joints.size(); i++) {
             ImGui::Text("Joint %d: (%.2f, %.2f, %.2f)", i, joints[i]->GetPos().x, joints[i]->GetPos().y, joints[i]->GetPos().z);
+			ImGui::Text("IsCanHurt %d: %d", i, joints[i]->getCanHurt());
+			ImGui::Text("IsDestroyed %d: %d", i, joints[i]->getisDestroyed());
         }
         //angle
 		for (int i = 0; i < joints.size(); i++) {
@@ -83,7 +89,19 @@ public:
         
     }
 
-
+	//更新可以受到伤害的节点：只有活着的最后一个节点可以受到伤害
+    void upDateCanHurt()
+    {
+        // 找到最后一个 isDead 为 false 的节点
+        for (auto it = joints.rbegin(); it != joints.rend(); ++it)
+        {
+            if (!(*it)->getisDestroyed())
+            {
+                (*it)->setCanHurt(true);
+                break;
+            }
+        }
+    }
 
 
 	//通过两个点的位置，处理链条（第一个点是固定的）（IK处理）
@@ -102,6 +120,14 @@ public:
         //    joints[i] = constrainDistance(joints[i], joints[i + 1], linkSize);
         //}
     }
+
+	void SetEnableGravity(bool flag)
+	{
+		for (auto& joint : joints)
+		{
+			joint->SetEnableGravity(flag);
+		}
+	}
 
     private:
         // 计算向量的方位角和极角

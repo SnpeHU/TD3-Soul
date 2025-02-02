@@ -4,7 +4,8 @@
 #include "Tool/MyVector3.h"
 #include "StateNode.h"
 
-
+class Beam;
+class BlockEmitter;
 
 class BasicState : public StateNode
 {
@@ -16,7 +17,7 @@ public:
 	//virtual void onExit() override;
 private:
 	Timer timer;
-	float totaltime = 5.0f;
+	float totaltime = 3.0f;
 	float passTime = 0.0f;
 
 	
@@ -92,5 +93,37 @@ private:
 	
 	bool isUpOver = false;
 	bool isFollowPlayer = false;
+
+};
+
+//抬头结束后，冲向玩家
+class PushHead : public StateNode
+{
+public:
+	PushHead();
+	~PushHead() = default;
+	void onEnter() override;
+	void onUpdate() override;
+	void onExit() override;
+private:
+	float pushSpeed = 10.0f;
+	bool isChangeGravity = false;
+
+};
+
+
+class BeamAttack : public StateNode
+{
+public:
+	BeamAttack();
+	~BeamAttack() = default;
+	void onEnter() override;
+	void onUpdate() override;
+	void onExit() override;
+private:
+	Timer attackTimer;
+	float attackTime = 10.0f;
+
+	Beam* beam = nullptr;
 
 };

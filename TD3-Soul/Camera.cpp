@@ -4,6 +4,7 @@ Camera::Camera(Vector2 _pos)
 {
 	
 	pos = _pos;
+	originalPos = _pos;
 	size = Vector2(windowWidth, windowHeight);
 	rotation = 0.0f;
 	scale = 1.0f;
@@ -16,6 +17,7 @@ Camera::Camera(Vector2 _pos)
 	shakeTimer.set_on_timeout([&]() {
 		isShake = false;
 		shakePos = { 0,0 };
+		pos = originalPos;
 		});
 
 	//添加摄像机倾斜角度（透视投影）（有问题）
@@ -28,11 +30,12 @@ Camera::Camera(Vector2 _pos)
 void Camera::Reset()
 {
 	pos = Vector2(0, 0);
+	originalPos = pos;
 	rotation = 0.0f;
 	scale = 1.0f;
 	angle = 0.0f;
 	isShake = false;
-	//target = nullptr;
+	target = nullptr;
 }
 
 void Camera::Input(char* keys)
@@ -83,8 +86,7 @@ void Camera::Update()
 	{
 		shakePos.x = (-50 + rand() % 100) / 50.0f * shakePower;
 		shakePos.y = (-50 + rand() % 100) / 50.0f * shakePower;
-		pos.x += shakePos.x;
-		pos.y += shakePos.y;
+		pos = originalPos + shakePos;
 	}
 
 	if (target)
@@ -98,6 +100,7 @@ void Camera::Update()
 		{
 			pos.x += dir.x * 0.1f;
 			pos.y += dir.y * 0.1f;
+			originalPos = pos;
 		}
 	}
 }
@@ -130,7 +133,7 @@ Matrix3x3 Camera::GetObjectMatrix(const Vector2& worldPos, float objectRotation)
 {
 	Matrix3x3 translate = MakeTranslateMatrix(worldPos);
 	Matrix3x3 rotate = MakeRotateMatrix(objectRotation);
-	Matrix3x3 objectMatrix = Multiply(translate, rotate);
+	Matrix3x3 objectMatrix = Multiply(rotate, translate);
 	objectMatrix = Multiply(objectMatrix, view);
 	objectMatrix = Multiply(objectMatrix, projection);
 	objectMatrix = Multiply(objectMatrix, viewport);

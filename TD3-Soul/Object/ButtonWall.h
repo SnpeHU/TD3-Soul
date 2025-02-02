@@ -13,4 +13,7 @@ public:
 
 private:
 	std::function<void()> onTrigger;
+
+	Timer tirggerTimer;
+	float triggerTime = 1.0f;
 };

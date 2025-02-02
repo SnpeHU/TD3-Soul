@@ -28,11 +28,13 @@ public:
 	void RespwanAll();
 	void RemoveAllCharactors();
 
-	//void SetPlayer(std::shared_ptr<Charactor> _player) { player = _player; };
-	std::shared_ptr<Player> GetPlayer() { return player; };
+	//void SetPlayer(std::unique_ptr<Charactor> _player) { player = _player; };
+	//Player* GetPlayer() { return player.get(); };
 
-	std::shared_ptr<Snake> GetSnake() { return snake; };
+	//Snake* GetSnake() { return snake.get(); };
+	Player* GetPlayer() { return player; };
 
+	Snake* GetSnake() { return snake; };
 
 private:
 	CharactorManager();
@@ -41,8 +43,11 @@ private:
 private:
 	static CharactorManager* manager;
 
-	std::shared_ptr<Player> player = nullptr;
-	std::shared_ptr<Snake> snake = nullptr;
+	//std::unique_ptr<Player> player = nullptr;
+	//std::unique_ptr<Snake> snake = nullptr;
+
+	Player* player = nullptr;
+	Snake* snake = nullptr;
 	
 	//Charactor* snake = nullptr;
 };

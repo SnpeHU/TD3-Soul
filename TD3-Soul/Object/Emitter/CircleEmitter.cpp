@@ -11,7 +11,7 @@ CircleEmitter::CircleEmitter(Vector3 pos, float emitInterval)
 	emitTimer.set_on_timeout([this]() {
 		//emit
 		CircleParticle* newParticle = new CircleParticle(this->pos, 0.6f, 0.8f);
-		particles.push_back(newParticle);
+		ObjectManager::Instance()->AddObjectBy(newParticle);
 		});
 }
 
@@ -22,8 +22,5 @@ void CircleEmitter::Update()
 
 void CircleEmitter::Draw(const Camera& camera)
 {
-	for (auto& particle : particles)
-	{
-		particle->Draw(camera);
-	}
+	(void)camera;
 }

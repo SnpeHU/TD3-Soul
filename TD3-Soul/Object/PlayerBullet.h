@@ -1,6 +1,7 @@
 #pragma once
 #include "Bullet.h"
 #include "State/StateMachine.h"
+class BlockEmitter;
 class PlayerBullet : public Bullet
 {
 public:
@@ -12,7 +13,7 @@ public:
 	};
 
 	PlayerBullet(Vector3 pos);
-	~PlayerBullet() = default;
+	~PlayerBullet();
 	void Update() override;
 	void Draw(const Camera& camera) override;
 
@@ -41,9 +42,12 @@ public:
 	bool getIsCanShoot() const { return isCanShoot; };
 	void setIsCanShoot(bool flag) { isCanShoot = flag; };
 
+	bool getIsCanDamage() const { return isCanDamage; };
+	void setIsCanDamage(bool flag) { isCanDamage = flag; };
+
 private:
 
-	float kAirResistance = 0.05f;
+	float kAirResistance = 0.04f;
 	
 
 	float rotateRadius = 30.0f;
@@ -60,5 +64,8 @@ private:
 	bool isCanPick = false;//是否可以拾取
 	bool isRebound = true;//是否可以反弹
 	bool isCanShoot = false;//是否可以发射
+	bool isCanDamage = false;//是否可以造成伤害
 
+	//std::unique_ptr<BlockEmitter> tailEmitter = nullptr;
+	BlockEmitter* tailEmitter = nullptr;
 };

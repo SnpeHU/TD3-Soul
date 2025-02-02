@@ -6,7 +6,7 @@ class Scene
 {
 public:
 	Scene() = default;
-	~Scene() = default;
+	virtual ~Scene() = default;
 
 	virtual void onEnter() {}//シーンに入るときに呼び出される
 	virtual void onInput(char* keys, char* prekeys) = 0;
@@ -17,5 +17,9 @@ public:
 
 public:
 	string s_name = "none";
+	int backColor = 0xEFF0E6FF;
+	float windowWidth = 1280.0f;
+	float windowHeight = 720.0f;
 
+	int frontColor = 0x00000000;//滤镜颜色
 };

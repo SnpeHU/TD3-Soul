@@ -18,6 +18,15 @@ public:
         : x(x), y(y), z(z) {
     }
 
+	//间隔插值
+    static Vector3 lerp(const Vector3& start, const Vector3& end, float t) {
+        return Vector3(
+            start.x + t * (end.x - start.x),
+            start.y + t * (end.y - start.y),
+            start.z + t * (end.z - start.z)
+        );
+    }
+
     Vector3 operator+(const Vector3& vec) const
     {
         return Vector3(x + vec.x, y + vec.y, z + vec.z);

@@ -8,6 +8,7 @@
 #include <Scene/Game.h>
 #include <Scene/TestScene.h>
 #include <vector>
+#include <Tool/timer.h>
 class SceneManager
 {
 
@@ -40,13 +41,18 @@ public:
 	//getcurrentScene
 	SceneType getCurrentSceneType() const { return nextScene; }
 
-
+	void DelayedSwitchScene(SceneType type, float delay);
 
 
 	Scene* getCurrentScene() const { return currentScene; }
+	Timer& getSwitchSceneTimer() { return switchSceneTimer; }
+
+	bool getIsSwitchingScene() const { return isSwitchingScene; }
+	void setSwitchingScene(bool flag) { isSwitchingScene = flag; }
+
 private:
 	SceneManager() = default;
-	~SceneManager() = default;
+	~SceneManager();
 
 
 private:
@@ -55,8 +61,9 @@ private:
 
 
 	Scene* currentScene = nullptr;
-	//SceneType可以取无吗？
+
 	SceneType nextScene = SceneType::None;
+
 	
 
 	Scene* tieleScene = nullptr;
@@ -68,7 +75,8 @@ public:
 	int selectedStage = 0;//選択されているステージ
 	//Scene m_scene;
 
-
+	Timer switchSceneTimer;
+	bool isSwitchingScene = false;
 };
 
 #endif // !SCENEMANAGER_H

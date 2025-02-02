@@ -7,7 +7,7 @@ class PlayerBullet;
 class Player : public Charactor
 {
 	public:
-		Player();
+		Player() = default;
 		Player(Vector3 pos);
 		~Player();
 
@@ -42,8 +42,8 @@ private:
 	int curcolor;//当前颜色
 	int bodycolor = 0x00FFFFFF;
 
-	//std::vector<std::shared_ptr<BulletAround>> bullets;
-	std::shared_ptr<PlayerBullet> playerBullet = nullptr;
+	//std::vector<std::unique_ptr<BulletAround>> bullets;
+	PlayerBullet* playerBullet = nullptr;
 
 
 	

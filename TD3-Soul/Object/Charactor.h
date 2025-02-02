@@ -18,6 +18,20 @@ public:
 
 	bool GetIsDead() const { return isDead; };//只用于判断玩家和蛇主体的死亡
 
+	void SetVelocity(Vector3 _velocity) { velocity = _velocity; };
+	Vector3 GetVelocity() const { return velocity; };
+
+	void SetAcceleration(Vector3 _acceleration) { acceleration = _acceleration; };
+	Vector3 GetAcceleration() const { return acceleration; };
+
+
+	bool GetIsOnGround() const { return isOnGround; };
+
+	void SetEnableGravity(bool flag) { isEnableGravity = flag; };
+	bool GetEnableGravity() const { return isEnableGravity; };
+
+	void SetEnableResistance(bool flag) { isEnableResistance = flag; };
+	bool getEnableResistance() const { return isEnableResistance; };
 
 
 protected:
@@ -33,11 +47,18 @@ protected:
 	//默认为DrawBox的左上角
 	Vector2 leftTop;
 	
-	bool isEnableGravity = true;
-	float gravity = 0.8f;
+	bool isEnableGravity = false;
+	float gravity = 0.6f;
+
+
+	bool isEnableResistance = false;//是否启用摩擦力
+	float kResistance = 0.1f;//摩擦力系数
+
 	bool isOnGround = true;
 	bool isDead = false;
 
 	//状态机
 	StateMachine stateMachine;
+
+
 };

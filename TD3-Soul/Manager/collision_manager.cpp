@@ -2,6 +2,7 @@
 #include <Novice.h>
 #include "Object/Object.h"
 #include "Object/PlayerBullet.h"
+#include "Object/Charactor.h"
 #ifdef _DEBUG
 #include<imgui.h>
 #endif // DEBUG
@@ -98,7 +99,7 @@ bool CollisionManager::CheckCollision(CollisionBox* src, CollisionBox* dest)
         - min(src->pos.y - src->size.y / 2, dest->pos.y - dest->size.y / 2)
         <= src->size.y + dest->size.y);
    
-    bool isCollideZ = fabs(src->pos.z - dest->pos.z) <= 70.0f; //暂时仅判断z轴差值 一時的にZ軸の差のみを判定する
+    bool isCollideZ = fabs(src->pos.z - dest->pos.z) <= 30.0f; //暂时仅判断z轴差值 一時的にZ軸の差のみを判定する
 
     return isCollideX && isCollideY && isCollideZ;
 }
@@ -107,59 +108,175 @@ void CollisionManager::HandleCollision(CollisionBox* src, CollisionBox* dest)
 {
     //如果是地图层，调整位置
     //マップレイヤーの場合、位置を調整
-    if (dest->layer_src == CollisionLayer::Map)
+    //if (dest->layer_src == CollisionLayer::Map || dest->layer_src == CollisionLayer::Enemy)
+    //{
+    //    Vector2 overlap = { (src->size.x + dest->size.x) / 2 - std::abs(src->pos.x - dest->pos.x),
+    //                        (src->size.y + dest->size.y) / 2 - std::abs(src->pos.y - dest->pos.y) };
+    //    if (overlap.x < overlap.y)//x轴碰撞
+    //    {
+    //        if (src->pos.x < dest->pos.x)
+    //        {
+    //            src->pos.x -= overlap.x;
+    //        }
+    //        else
+    //        {
+    //            src->pos.x += overlap.x;
+    //        }
+
+    //        if (src->layer_src == CollisionLayer::PlayerBullet)
+    //        {
+    //            PlayerBullet* bu = dynamic_cast<PlayerBullet*>(src->owner);
+    //            if (bu->getIsRebound())
+    //            {
+    //                bu->SetVelocity(Vector3(-bu->GetVelocity().x, bu->GetVelocity().y, 0.0f));
+    //            }
+    //        }
+    //    }
+    //    else//y轴碰撞
+    //    {
+    //        if (src->pos.y < dest->pos.y)
+    //        {
+    //            src->pos.y -= overlap.y;
+    //        }
+    //        else
+    //        {
+    //            src->pos.y += overlap.y;
+    //        }
+
+    //        if (src->layer_src == CollisionLayer::PlayerBullet)
+    //        {
+    //            PlayerBullet* bu = dynamic_cast<PlayerBullet*>(src->owner);
+				//if (bu->getIsRebound())//如果是玩家子弹，且子弹可以反弹 プレイヤーの弾且つ弾が跳ね返せる場合
+    //            {
+    //                bu->SetVelocity(Vector3(bu->GetVelocity().x, -bu->GetVelocity().y, 0.0f));
+    //            }
+    //        }
+    //    }
+    //    src->owner->SetPos(Vector3(src->pos.x, src->pos.y - src->size.y / 2, src->pos.z));
+    //}
+
+    if (src->layer_src == CollisionLayer::Map || src->layer_src == CollisionLayer::Enemy)
     {
-        Vector2 overlap = { (src->size.x + dest->size.x) / 2 - std::abs(src->pos.x - dest->pos.x),
-                            (src->size.y + dest->size.y) / 2 - std::abs(src->pos.y - dest->pos.y) };
+        Vector2 overlap = { (dest->size.x + src->size.x) / 2 - std::abs(dest->pos.x - src->pos.x),
+                            (dest->size.y + src->size.y) / 2 - std::abs(dest->pos.y - src->pos.y) };
         if (overlap.x < overlap.y)//x轴碰撞
         {
-            if (src->pos.x < dest->pos.x)
-            {
-                src->pos.x -= overlap.x;
+			//暂时处理不了敌人卡墙的bug，先让位移量+1
+            if (Charactor* character = dynamic_cast<Charactor*>(dest->owner)) {
+                //dest->owner は Character クラスの場合
+                if (dest->pos.x < src->pos.x)
+                {
+                    dest->pos.x -= overlap.x+1;
+                }
+                else
+                {
+                    dest->pos.x += overlap.x+1;
+                }
+                dest->owner->SetPos(Vector3(dest->pos.x, dest->pos.y - dest->size.y / 2, dest->pos.z));
+                character->SetVelocity(Vector3(0.0f, character->GetVelocity().y, character->GetVelocity().z));
+                character->SetAcceleration(Vector3(0.0f, character->GetAcceleration().y, character->GetAcceleration().z));
             }
             else
             {
-                src->pos.x += overlap.x;
-            }
-
-            if (src->layer_src == CollisionLayer::PlayerBullet)
-            {
-                PlayerBullet* bu = dynamic_cast<PlayerBullet*>(src->owner);
-                if (bu->getIsRebound())
+                if (dest->pos.x < src->pos.x)
                 {
-                    bu->SetVelocity(Vector3(-bu->GetVelocity().x, bu->GetVelocity().y, 0.0f));
+                    dest->pos.x -= overlap.x;
+                }
+                else
+                {
+                    dest->pos.x += overlap.x;
+                }
+                dest->owner->SetPos(Vector3(dest->pos.x, dest->pos.y - dest->size.y / 2, dest->pos.z));
+
+                if (dest->layer_src == CollisionLayer::PlayerBullet)
+                {
+                    PlayerBullet* bu = dynamic_cast<PlayerBullet*>(dest->owner);
+                    if (bu->getIsRebound())
+                    {
+                        bu->SetVelocity(Vector3(-bu->GetVelocity().x, bu->GetVelocity().y, 0.0f));
+                        bu->setIsRebound(false);
+                    }
                 }
             }
+
+            
+
+
+            
         }
         else//y轴碰撞
         {
-            if (src->pos.y < dest->pos.y)
-            {
-                src->pos.y -= overlap.y;
+            if (Charactor* character = dynamic_cast<Charactor*>(dest->owner)) {
+                if (dest->pos.y < src->pos.y)
+                {
+                    dest->pos.y -= overlap.y+1;
+                }
+                else
+                {
+                    dest->pos.y += overlap.y+1;
+                }
+                dest->owner->SetPos(Vector3(dest->pos.x, dest->pos.y - dest->size.y / 2, dest->pos.z));
+                character->SetVelocity(Vector3(character->GetVelocity().x, 0.0f, character->GetVelocity().z));
+                character->SetAcceleration(Vector3(character->GetAcceleration().x, 0.0f, character->GetAcceleration().z));
             }
             else
             {
-                src->pos.y += overlap.y;
-            }
-
-            if (src->layer_src == CollisionLayer::PlayerBullet)
-            {
-                PlayerBullet* bu = dynamic_cast<PlayerBullet*>(src->owner);
-				if (bu->getIsRebound())//如果是玩家子弹，且子弹可以反弹 プレイヤーの弾且つ弾が跳ね返せる場合
+                if (dest->pos.y < src->pos.y)
                 {
-                    bu->SetVelocity(Vector3(bu->GetVelocity().x, -bu->GetVelocity().y, 0.0f));
+                    dest->pos.y -= overlap.y;
+                }
+                else
+                {
+                    dest->pos.y += overlap.y;
+                }
+                dest->owner->SetPos(Vector3(dest->pos.x, dest->pos.y - dest->size.y / 2, dest->pos.z));
+                if (dest->layer_src == CollisionLayer::PlayerBullet)
+                {
+                    PlayerBullet* bu = dynamic_cast<PlayerBullet*>(dest->owner);
+                    if (bu->getIsRebound())//如果是玩家子弹，且子弹可以反弹 プレイヤーの弾且つ弾が跳ね返せる場合
+                    {
+                        bu->SetVelocity(Vector3(bu->GetVelocity().x, -bu->GetVelocity().y, 0.0f));
+                    }
                 }
             }
+           
+
         }
-        src->owner->SetPos(Vector3(src->pos.x, src->pos.y - src->size.y / 2, src->pos.z));
+        
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     //调用回调函数
     //コールバック関数を呼び出す
     auto it = src->layer_dest.find(dest->layer_src);
     if (it != src->layer_dest.end())
     {
-        it->second();
+        // 额外的条件检查
+        if (dest->layer_src == CollisionLayer::PlayerBullet)
+        {
+            PlayerBullet* bu = dynamic_cast<PlayerBullet*>(dest->owner);
+
+            if (bu != nullptr && bu->getIsCanDamage())
+            {
+                it->second();
+				bu->setIsCanDamage(false);
+            }
+        }
+        else
+        {
+            it->second();
+        }
     }
 }
 

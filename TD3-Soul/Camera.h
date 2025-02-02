@@ -70,6 +70,7 @@ public:
 	}
 private:
 	Vector2 pos;
+	Vector2 originalPos; // 用于存储摄像机抖动前位置
 	Vector2 size;
 	float rotation;
 	float scale;

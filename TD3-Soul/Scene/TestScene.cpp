@@ -13,6 +13,7 @@ TestScene::TestScene()
 void TestScene::onEnter()
 {
 	snake = new Snake_D(Vector2(400, 300));
+	frontColor = 0x00000000;
 }
 
 void TestScene::onInput(char* keys, char* prekeys)
@@ -31,12 +32,28 @@ void TestScene::Update()
 	int x, y;
 	Novice::GetMousePosition(&x, &y);
 	snake->resolve();
-	//snake->resolve();
+	//如果正在切换场景，前景色逐渐变黑
+	if (SceneManager::Instance()->getIsSwitchingScene())
+	{
+
+		//frontColor
+		float t = SceneManager::Instance()->getSwitchSceneTimer().get_progress();
+		if (t >= 1.0f)
+		{
+			t = 1.0f;
+
+		}
+		frontColor = Vector2().GetColor(0, 0, 0, int(255 * t));
+		//SceneManager::Instance()->getSwitchSceneTimer().get_progress();
+		//frontColor 的透明度随着时间逐渐变低
+
+	}
 }
 
 void TestScene::Draw(const Camera& camera)
 {
 	(void)camera;
+	Novice::DrawBox(0, 0, (int)windowWidth, (int)windowHeight, 0.0f, backColor, kFillModeSolid);
 	snake->display();
 
 #ifdef _DEBUG

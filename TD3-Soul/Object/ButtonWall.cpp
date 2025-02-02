@@ -22,6 +22,8 @@ ButtonWall::ButtonWall(Vector3 pos, Vector3 size)
 			return;
 		}
 		});
+	hurt_box->addLayerDest(CollisionLayer::Player, [this]() {
+		});
 	hurtBoxSize = { size.x,size.y };
 	hurt_box->setSize(hurtBoxSize);
 

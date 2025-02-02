@@ -15,6 +15,14 @@ Wall::Wall(Vector3 pos, Vector3 size)
 	//collisionbox
 	hurt_box = CollisionManager::Instance()->CreatCollisionBox(this);
 	hurt_box->setLayerSrc(CollisionLayer::Map);
+	hurt_box->addLayerDest(CollisionLayer::Player, [this]() {
+		});
+	hurt_box->addLayerDest(CollisionLayer::PlayerBullet, [this]() {
+		});
+	hurt_box->addLayerDest(CollisionLayer::Enemy, [this]() {
+		});
+	hurt_box->addLayerDest(CollisionLayer::EnermyBullet, [this]() {
+		});
 	hurtBoxSize = { size.x,size.y };
 	hurt_box->setSize(hurtBoxSize);
 	
