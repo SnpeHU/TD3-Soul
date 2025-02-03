@@ -133,7 +133,7 @@ Matrix3x3 Camera::GetObjectMatrix(const Vector2& worldPos, float objectRotation)
 {
 	Matrix3x3 translate = MakeTranslateMatrix(worldPos);
 	Matrix3x3 rotate = MakeRotateMatrix(objectRotation);
-	Matrix3x3 objectMatrix = Multiply(rotate, translate);
+	Matrix3x3 objectMatrix = Multiply( rotate, translate);
 	objectMatrix = Multiply(objectMatrix, view);
 	objectMatrix = Multiply(objectMatrix, projection);
 	objectMatrix = Multiply(objectMatrix, viewport);

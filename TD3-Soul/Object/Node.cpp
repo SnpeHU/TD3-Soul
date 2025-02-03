@@ -2,6 +2,7 @@
 
 Node::Node(Vector3 pos)
 {
+	name = "Node";
 	this->pos = pos;
 	size = { 30.0f,30.0f };
 	drawPos = { 0.0f,size.y };

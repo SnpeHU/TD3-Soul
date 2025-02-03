@@ -312,6 +312,22 @@ void Player::Draw(const Camera& camera)
 	#endif // DEBUG
 }
 
+void Player::Reset(Vector3 _pos)
+{
+	this->pos = _pos;
+	toward = { 0.0f,0.0f ,0.0f };
+	velocity = { 0.0f,0.0f,0.0f };
+	acceleration = { 0.0f,0.0f,0.0f };
+	isDead = false;
+	hp = maxHp;
+	isInvincible = false;
+	isHaveBullet = true;
+	curcolor = bodycolor;
+	invincibleTimer.restart();
+	rollTimer.restart();
+	playerBullet->getStateMachine().SwitchTo("Follow");
+}
+
 void Player::ClearNodes()
 {
 

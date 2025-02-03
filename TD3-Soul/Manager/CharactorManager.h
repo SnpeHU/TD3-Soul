@@ -22,18 +22,14 @@ public:
 
 
 	void CheckCharactorsLive();
-	void RespwanPlayer();
 	void RespwanPlayer(Vector3 pos);
 	void RespwanSnake();
-	void RespwanAll();
 	void RemoveAllCharactors();
 
-	//void SetPlayer(std::unique_ptr<Charactor> _player) { player = _player; };
-	//Player* GetPlayer() { return player.get(); };
+	void ResetPlayer(Vector3 pos);
+	void ResetSnake(Vector3 pos);
 
-	//Snake* GetSnake() { return snake.get(); };
 	Player* GetPlayer() { return player; };
-
 	Snake* GetSnake() { return snake; };
 
 private:

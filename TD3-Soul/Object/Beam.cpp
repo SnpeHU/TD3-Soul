@@ -7,7 +7,7 @@ Beam::Beam(Vector3 _endPos, Vector3 _startPos,Charactor* _target)
 	this->pos = _endPos;//光束落点位置
 	this->startPos = _startPos;//光束发射位置
 	this->target = _target;
-	size = { 40.0f,40.0f };
+	size = { 25.0f,25.0f };
 	color = 0x8B3A3AFF;
 
 	speed = 3.0f;
@@ -36,7 +36,7 @@ Beam::Beam(Vector3 _endPos, Vector3 _startPos,Charactor* _target)
 		//每次发射三个节点的粒子,
 		for (size_t i = 0; i < emitCount; i++)
 		{
-			ObjectManager::Instance()->AddObjectBy(new BlockParticle(points[emitIndex], parSize, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.0f, 1.0f, color,0.3f));
+			ObjectManager::Instance()->AddObjectBy(new BlockParticle(points[emitIndex], parSize, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.0f, 1.0f, 0.3f,0.05f,color));
 			emitIndex++;
 			if (emitIndex >= points.size() - 1)
 			{
@@ -47,7 +47,7 @@ Beam::Beam(Vector3 _endPos, Vector3 _startPos,Charactor* _target)
 		});
 
 	blockEmitter = std::make_unique<BlockEmitter>(pos, 0.05f);
-	blockEmitter->SetEnable(false);
+	blockEmitter->SetEnable(true);
 }
 
 void Beam::Update()

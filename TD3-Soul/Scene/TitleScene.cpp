@@ -83,7 +83,9 @@ void TitleScene::Draw(const Camera& camera)
 {
 	Novice::DrawBox(0, 0, (int)windowWidth, (int)windowHeight, 0.0f, backColor, kFillModeSolid);
 	ObjectManager::Instance()->Draw(camera);
+#ifdef _DEBUG
 	CollisionManager::Instance()->onDebugRender(camera);
+#endif // DEBUG
 	Novice::DrawBox(0, 0, (int)windowWidth, (int)windowHeight, 0.0f, frontColor, kFillModeSolid);
 }
 

@@ -60,6 +60,6 @@ protected:
 
 	Vector2 shadowSize = { 0.0f,0.0f };
 	//影子颜色为黑色
-	int shadowColor = 0x00000030;
+	int shadowColor = 0x00000060;
 
 };

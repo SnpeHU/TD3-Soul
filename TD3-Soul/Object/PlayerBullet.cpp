@@ -30,7 +30,7 @@ PlayerBullet::PlayerBullet(Vector3 pos)
 	stateMachine.SetEntry("Follow");
 
 	//tailEmitter = std::make_unique<BlockEmitter>(pos, 0.02f, Vector2(5.0f, 5.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, 0.0f, 0xFFFFFFFF);
-	tailEmitter = new BlockEmitter(pos, 0.03f, Vector2(15.0f, 15.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.5f, 0.0f, 0x717170FF);
+	tailEmitter = new BlockEmitter(pos, 0.03f, Vector2(15.0f, 15.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.0f, 0.5f, 0.0f, 0x717170FF);
 	//tailEmitter = new BlockEmitter(Vector3(0.0f, 30.0f, 0.0f), 0.5f);
 	//tailEmitter->SetEnable(true);
 }
@@ -116,7 +116,7 @@ void PlayerBullet::Update()
 		isCanDamage = true;
 		if(!tailEmitter->GetEnable())
 		{
-			//tailEmitter->SetEnable(true);
+			tailEmitter->SetEnable(true);
 		}
 	}
 	else
@@ -124,7 +124,7 @@ void PlayerBullet::Update()
 		isCanDamage = false;
 		if (tailEmitter->GetEnable())
 		{
-			//tailEmitter->SetEnable(false);
+			tailEmitter->SetEnable(false);
 		}
 	}
 

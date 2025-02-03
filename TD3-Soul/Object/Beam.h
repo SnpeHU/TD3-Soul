@@ -27,7 +27,7 @@ private:
 	Vector2 parSize = { 30.0f,30.0f };
 	std::vector<Vector3> points;
 	Timer emitTimer;
-	float emitInterval = 1.0f;
+	float emitInterval = 0.1f;
 
 	int emitIndex = 0;
 	int emitCount = 2;

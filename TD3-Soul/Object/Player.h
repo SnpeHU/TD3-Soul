@@ -15,6 +15,7 @@ class Player : public Charactor
 		void Update() override;
 		void Draw(const Camera& camera) override;
 
+		void Reset(Vector3 pos) override;
 		void ClearNodes() override;
 
 private:

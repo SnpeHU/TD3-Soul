@@ -1,6 +1,7 @@
 #include "Snake.h"
 #include "Novice.h"
 #include "State/SnakeState.h"
+#include "Manager/CharactorManager.h"
 #ifdef _DEBUG
 #include<imgui.h>
 #endif // DEBUG
@@ -8,7 +9,7 @@ Snake::Snake(Vector3 pos)
 {
 	this->pos = pos;
 	toward = { 1.0f,0.0f ,0.0f};
-	size = { 30.0f,30.0f };
+	size = { 20.0f,20.0f };
 	speed = 3.0f;
 	color = 0x4E7A70FF;
 	nodeNum = 10;
@@ -128,8 +129,15 @@ void Snake::Update()
 
 
 
+	if (CharactorManager::Instance()->GetPlayer())
+	{
+		if (isActive)
+		{
+			stateMachine.onUpdate();
+		}
+		
+	}
 
-	stateMachine.onUpdate();
 
 
 	spine.resolve(pos, toward);
@@ -165,6 +173,19 @@ void Snake::Draw(const Camera& camera)
 
 #endif
 	
+}
+
+void Snake::Reset(Vector3 _pos)
+{
+	this->pos = _pos;
+	toward = { 1.0f,0.0f ,0.0f };
+	velocity = { 0.0f,0.0f,0.0f };
+	acceleration = { 0.0f,0.0f,0.0f };
+	stateMachine.SwitchTo("Basic");
+	ClearNodes();
+	//headPos = { 0.0f,size.y / 2 };
+	spine = Chain(pos, nodeNum, nodeInterval, 2 * M_PI, 2 * M_PI);
+	isDead = false;
 }
 
 void Snake::SetNodeEnableGravity(bool flag)

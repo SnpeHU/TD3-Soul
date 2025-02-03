@@ -20,6 +20,8 @@ public:
 	void Update() override;
 	void Draw(const Camera& camera) override;
 
+	void Reset(Vector3 pos) override;
+
 	void SetNodeEnableGravity(bool flag);
 	void ClearNodes() override;
 
@@ -50,7 +52,7 @@ private:
 	//bool isJumpButton = false;
 	float jumpForce = 10.0f;
 
-
+	bool isActive = true;
 
 
 };

@@ -16,6 +16,15 @@ public:
 
 	void SetEmitInterval(float interval) { emitInterval = interval; };
 
+	void SetParticleSize(Vector2 _size) { parSize = _size; };
+	void SetParticleToward(Vector3 _toward) { parToward = _toward; };
+	void SetParticleAcc(Vector3 _acc) { parAcc = _acc; };
+	void SetParticleSpeed(float _speed) { parSpeed = _speed; };
+	void SetParticleLifeTime(float _lifeTime) { parLifeTime = _lifeTime; };
+	void SetRotateSpeed(float _speed) { rotateSpeed = _speed; };
+	void SetParticleColor(int _color) { parColor = _color; };
+
+
 protected:
 	//std::vector<Particle*> particles;
 
@@ -24,12 +33,13 @@ protected:
 	Timer emitTimer;
 	float emitInterval = 0.01f;
 
-	Vector2 particleSize = {5.0f,5.0f};
-	Vector3 particleToward = { 0.0f,0.0f,0.0f };
-	Vector3 particleAcceleration = { 0.0f,0.0f,0.0f };
-	float particleSpeed = 2.0f;
-	float particleLifeTime = 1.0f;
-	int particleColor = 0xFFFFFFFF;
+	Vector2 parSize = {5.0f,5.0f};
+	Vector3 parToward = { 0.0f,0.0f,0.0f };
+	Vector3 parAcc = { 0.0f,0.0f,0.0f };
+	float parSpeed = 2.0f;
+	float parLifeTime = 1.0f;
+	float rotateSpeed = 0.0f;
+	int parColor = 0xFFFFFFFF;
 	
 
 

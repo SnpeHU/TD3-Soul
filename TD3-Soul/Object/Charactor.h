@@ -15,6 +15,7 @@ public:
 	void SwitchState(const std::string& _id);
 
 	virtual void ClearNodes() {};
+	virtual void Reset(Vector3 _pos) { (void)_pos; };
 
 	bool GetIsDead() const { return isDead; };//只用于判断玩家和蛇主体的死亡
 
