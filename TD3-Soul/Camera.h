@@ -35,6 +35,7 @@ public:
 
 	Matrix3x3 GetObjectMatrix(const Vector2& worldPos, float objectRotation) const;
 
+	Vector2 ScreenToWorld(const Vector2& screenPos) const;
 
 	void SetTarget(Object* _target);
 

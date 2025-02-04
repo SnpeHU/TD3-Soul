@@ -341,5 +341,8 @@
     <ClInclude Include="Object\ButtonWall.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Tool\Color.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

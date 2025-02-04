@@ -3,6 +3,7 @@
 #include "Tool/MyVector2.h"
 #include "Tool/MyVector3.h"
 #include "StateNode.h"
+#include "Novice.h"
 class Object;
 class PlayerBullet;
 class FollowState : public StateNode
@@ -41,6 +42,13 @@ private:
 	int maxPowerLevel = 3;
 
 	float basicspeed = 5.0f;
+
+	int sound[3] = {
+		Novice::LoadAudio("./rs/SoundA.wav"),
+		Novice::LoadAudio("./rs/SoundB.wav"),
+		Novice::LoadAudio("./rs/SoundC.wav"),
+	};
+
 };
 
 class ShootedState : public StateNode

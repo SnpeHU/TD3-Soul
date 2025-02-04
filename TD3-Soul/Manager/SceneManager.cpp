@@ -26,7 +26,7 @@ void SceneManager::Init()
 	//clearSCene = new ClearScene();
 	testScene = new TestScene();
 	stageScene.push_back(new Game());
-	setCurrentScene(stageScene[0]);
+	setCurrentScene(tieleScene);
 
 
 }

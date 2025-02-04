@@ -76,7 +76,7 @@ public:
 		for (int i = 0; i < joints.size(); i++) {
             ImGui::Text("Joint %d: (%.2f, %.2f, %.2f)", i, joints[i]->GetPos().x, joints[i]->GetPos().y, joints[i]->GetPos().z);
 			ImGui::Text("IsCanHurt %d: %d", i, joints[i]->getCanHurt());
-			ImGui::Text("IsDestroyed %d: %d", i, joints[i]->getisDestroyed());
+			ImGui::Text("IsDestroyed %d: %d", i, joints[i]->GetIsDestroyed());
         }
         //angle
 		for (int i = 0; i < joints.size(); i++) {
@@ -95,7 +95,7 @@ public:
         // 找到最后一个 isDead 为 false 的节点
         for (auto it = joints.rbegin(); it != joints.rend(); ++it)
         {
-            if (!(*it)->getisDestroyed())
+            if (!(*it)->GetIsDestroyed())
             {
                 (*it)->setCanHurt(true);
                 break;

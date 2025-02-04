@@ -140,6 +140,23 @@ Matrix3x3 Camera::GetObjectMatrix(const Vector2& worldPos, float objectRotation)
 	return objectMatrix;
 }
 
+Vector2 Camera::ScreenToWorld(const Vector2& screenPos) const
+{
+	// 计算逆矩阵
+	Matrix3x3 invViewport = Inverse(viewport);
+	Matrix3x3 invProjection = Inverse(projection);
+	Matrix3x3 invView = Inverse(view);
+
+	// 将屏幕坐标转换为归一化设备坐标
+	Vector2 ndcPos = Transform(screenPos, invViewport);
+
+	// 将归一化设备坐标转换为世界坐标
+	Vector2 worldPos = Transform(ndcPos, invProjection);
+	worldPos = Transform(worldPos, invView);
+
+	return worldPos;
+}
+
 void Camera::SetTarget(Object* _target)
 {
 	target = _target;

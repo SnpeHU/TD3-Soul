@@ -8,6 +8,7 @@
 #include "Object/ButtonWall.h"
 #include "Camera.h"
 extern Camera m_camera;
+
 TitleScene::TitleScene()
 {
 	s_name = "Title";
@@ -33,6 +34,7 @@ void TitleScene::onEnter()
 		SceneManager::Instance()->DelayedSwitchScene(SceneManager::SceneType::Game, 1.0f);//1秒後にシーンを切り替える
 		m_camera.Shake(1.0f, 10.0f);
 		});
+	buttonWallnext->SetImg(TitleImg);
 
 	ObjectManager::Instance()->AddObject(std::move(buttonWallnext));
 
@@ -40,10 +42,13 @@ void TitleScene::onEnter()
 	buttonWallnext2->SetOnTrigger([this]() {
 		SceneManager::Instance()->DelayedSwitchScene(SceneManager::SceneType::Game, 1.0f);
 		m_camera.Shake(1.0f, 10.0f);
-
 		});
-
+	buttonWallnext2->SetImg(startSprite);
+	buttonWallnext2->isRotate = true;
 	ObjectManager::Instance()->AddObject(std::move(buttonWallnext2));
+
+
+	auto titleWall = std::make_unique<Wall>(Vector3(0.0f, -200.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));//出生点后的墙
 }
 
 void TitleScene::onInput(char* keys, char* prekeys)
@@ -83,9 +88,9 @@ void TitleScene::Draw(const Camera& camera)
 {
 	Novice::DrawBox(0, 0, (int)windowWidth, (int)windowHeight, 0.0f, backColor, kFillModeSolid);
 	ObjectManager::Instance()->Draw(camera);
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	CollisionManager::Instance()->onDebugRender(camera);
-#endif // DEBUG
+//#endif // DEBUG
 	Novice::DrawBox(0, 0, (int)windowWidth, (int)windowHeight, 0.0f, frontColor, kFillModeSolid);
 }
 

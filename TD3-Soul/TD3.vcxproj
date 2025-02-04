@@ -209,6 +209,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="State\SnakeState.h" />
     <ClInclude Include="State\StateMachine.h" />
     <ClInclude Include="State\StateNode.h" />
+    <ClInclude Include="Tool\Color.h" />
     <ClInclude Include="Tool\Matrix.h" />
     <ClInclude Include="Tool\MyVector2.h" />
     <ClInclude Include="Tool\MyVector3.h" />

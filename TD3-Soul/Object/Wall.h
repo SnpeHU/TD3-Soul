@@ -8,8 +8,12 @@ public:
 	virtual ~Wall() = default;
 	void Update() override;
 	void Draw(const Camera& camera) override;
+
+	
 protected:
 	float height;
 
 	int topColor;
+
+	
 };

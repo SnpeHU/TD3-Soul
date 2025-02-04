@@ -7,64 +7,92 @@ Beam::Beam(Vector3 _endPos, Vector3 _startPos,Charactor* _target)
 	this->pos = _endPos;//光束落点位置
 	this->startPos = _startPos;//光束发射位置
 	this->target = _target;
-	size = { 25.0f,25.0f };
+	size = { 50.0f,50.0f };
 	color = 0x8B3A3AFF;
 
-	speed = 3.0f;
-	maxSpeed = 8.0f;
+	speed = 0.2f;//用于计算移动加速度
+	maxSpeed = 6.0f;
+
+	curLength = 0.0f;
 
 	hurt_box = CollisionManager::Instance()->CreatCollisionBox(this);
 	hurt_box->setLayerSrc(CollisionLayer::EnermyBullet);
 	hurtBoxSize = { size.x,size.y / 2 };
 	hurt_box->setSize(hurtBoxSize);
+	hurt_box->setEnabled(false);
 
 
 	toGroundTimer.set_one_shot(true);
-	toGroundTimer.set_wait_time(0.5f);
+	toGroundTimer.set_wait_time(1.0f);
 	toGroundTimer.set_on_timeout([this]() {
 		isToGround = true;
+		hurt_box->setEnabled(true);
+		blockEmitter = std::make_unique<BlockEmitter>(pos, 0.03f);
+		blockEmitter->SetEnable(true);
 		});
 
 	emitTimer.set_one_shot(false);
 	emitTimer.set_wait_time(emitInterval);
 	emitTimer.set_on_timeout([this]() {
-		//for (auto& point : points)
-		//{
-		//	ObjectManager::Instance()->AddObjectBy(new BlockParticle(point, Vector2{ 20.0f,20.0f }, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.4f), 0.0f, 1.0f, color));
-		//}
 
 		//每次发射三个节点的粒子,
 		for (size_t i = 0; i < emitCount; i++)
 		{
-			ObjectManager::Instance()->AddObjectBy(new BlockParticle(points[emitIndex], parSize, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.0f, 1.0f, 0.3f,0.05f,color));
+			if (points.size() == 0)
+			{
+				break;
+			}
+			ObjectManager::Instance()->AddObjectBy(new BlockParticle(points[emitIndex], parSize, Vector3(0.0f, 0.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f, 0.3f,0.0f,color));
 			emitIndex++;
 			if (emitIndex >= points.size() - 1)
 			{
 				emitIndex = 0;
 			}
 		}
+		//ObjectManager::Instance()->AddObjectBy(new BlockParticle(startPos, parSize, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.0f, 1.0f, 0.3f, 0.05f, color));
 
 		});
 
-	blockEmitter = std::make_unique<BlockEmitter>(pos, 0.05f);
-	blockEmitter->SetEnable(true);
+
 }
 
 void Beam::Update()
 {
 	length = (pos - startPos).length();
-	curLength = length;
+	
 
-	//if (!isToGround)
-	//{
-	//	
-	//	//实现easeInCubic更新当前长度
+	if (!isToGround)
+	{
+		
+		float t = toGroundTimer.get_progress();
+		if (t > 1.0f)
+		{
+			t = 1.0f;
+		}
 
+		float easeInCubic = t * t * t;
 
-	//	//curLength = easeInCubic(toGroundTimer.get_progress(), 0.0f, length, 1.0f);
-	//	toGroundTimer.on_update(deltaTime);
-	//}
-	//Vector3 dir = (target->GetPos() - pos).normalize();
+		curLength = easeInCubic * length;
+		
+		toGroundTimer.on_update(deltaTime);
+	}
+	else
+	{
+		
+		curLength = length;
+		blockEmitter->Update();
+		blockEmitter->SetPos(pos);
+
+		//根据目标位置和当前位置计算方向
+		Vector3 dir = (target->GetPos() - pos).normalize();
+		acceleration = dir * speed;
+	}
+
+	if (velocity.length() > maxSpeed)
+	{
+		velocity = velocity.normalize() * maxSpeed;
+	}
+
 
 	//在starPos和endPos之间生成粒子,每隔linkSize的距离生成一个粒子
 
@@ -89,10 +117,8 @@ void Beam::Update()
 		points[i] = Vector3::lerp(startPos, pos, i / float(nodeCount));
 	}
 
+	//光束粒子
 	emitTimer.on_update(deltaTime);
-
-	blockEmitter->Update();
-	blockEmitter->SetPos(pos);
 
 	Bullet::Update();
 }

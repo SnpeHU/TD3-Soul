@@ -5,7 +5,6 @@ class CircleEmitter;
 class Game : public Scene
 {
 public:
-	//赋值场景名字
 	Game();
 	~Game() = default;
 
@@ -18,4 +17,5 @@ public:
 private:
 	//BlockEmitter* blockEmitter = nullptr;
 	//CircleEmitter* circleEmitter = nullptr;
+	bool isOver = false;
 };

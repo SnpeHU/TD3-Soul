@@ -2,11 +2,16 @@
 #include "PlayerBullet.h"
 #include "Novice.h"
 #include "Manager/ObjectManager.h"
+#include "Emitter/BlockParticle.h"
 #ifdef _DEBUG
 #include<imgui.h>
 #endif // DEBUG
 
 #define deltaTime (1.0f/60.0f)
+
+extern int aimPosX;
+extern int aimPosY;
+extern Camera m_camera;
 
 Player::Player(Vector3 _pos)
 {
@@ -44,6 +49,7 @@ Player::Player(Vector3 _pos)
 		}
 		hp--;
 		isInvincible = true;
+		Novice::PlayAudio(impactAudio, 0, 1.0f);
 		});
 	hurt_box->addLayerDest(CollisionLayer::EnermyBullet, [this]() {
 		if (isInvincible)
@@ -52,6 +58,7 @@ Player::Player(Vector3 _pos)
 		}
 		hp--;
 		isInvincible = true;
+		Novice::PlayAudio(impactAudio, 0, 1.0f);
 		});
 
 	hurtBoxSize = { size.x,size.y/2 };
@@ -63,10 +70,19 @@ Player::Player(Vector3 _pos)
 	rollTimer.set_wait_time(rolltime);
 	rollTimer.set_on_timeout([&]() {
 		isRolling = false;
+		isCanRoll = false;
 		rollTimer.restart();
 		/*hurt_box->setEnabled(true);*/
 		
 		});
+
+	rollingCoolDownTimer.set_one_shot(true);
+	rollingCoolDownTimer.set_wait_time(rollingCoolDownTime);
+	rollingCoolDownTimer.set_on_timeout([&]() {
+		isCanRoll = true;
+		rollingCoolDownTimer.restart();
+		});
+
 
 	invincibleTimer.set_one_shot(true);
 	invincibleTimer.set_wait_time(invincibleTime);
@@ -75,6 +91,10 @@ Player::Player(Vector3 _pos)
 		invincibleTimer.restart();
 		});
 
+	corners[0] = { -size.x / 2,size.y/2 };
+	corners[1] = { size.x / 2,size.y / 2 };
+	corners[2] = { -size.x / 2,-size.y / 2 };
+	corners[3] = { size.x / 2,-size.y / 2 };
 
 }
 
@@ -87,6 +107,10 @@ void Player::Input(char* keys, char* prekeys)
 {
 	(void)keys;
 	(void)prekeys;
+	if (isDead)
+	{
+		return;
+	}
 	if (keys[DIK_W])
 	{
 		isUp = true;
@@ -153,9 +177,18 @@ void Player::Input(char* keys, char* prekeys)
 
 void Player::Update()
 {
+	if (isDead)
+	{
+		return;
+	}
 	Vector3 dir = { float(isRight - isLeft),float(isUp - isDown) ,0.0f };
 
-	if (isRollButton && !isRolling)
+	if (!isCanRoll)
+	{
+		rollingCoolDownTimer.on_update(deltaTime);
+	}
+
+	if (isRollButton && !isRolling && isCanRoll)
 	{
 		isRolling = true;
 		isAiming = false;
@@ -197,6 +230,7 @@ void Player::Update()
 				//让子弹飞向玩家
 				Vector2 dir_bu = { pos.x - playerBullet->GetPos().x,pos.y - playerBullet->GetPos().y };
 				dir_bu = dir_bu.normalize();
+				//playerBullet->SetAcceleration(Vector3(dir_bu.x, dir_bu.y, 0.0f) * 0.01f);
 				playerBullet->SetVelocity(Vector3(dir_bu.x, dir_bu.y,0.0f ) * playerBullet->GetSpeed());
 			}
 		}
@@ -270,19 +304,63 @@ void Player::Update()
 	if (hp <= 0)
 	{
 		isDead = true;
+		//死亡特效
+		for (int i = 0; i < 50; i++)
+		{
+			Vector3 parPos = { pos.x + rand() % int(size.x) - size.x / 2,pos.y + rand() % int(size.y) - size.y / 2,pos.z };
+			//随机上升加速度
+			Vector3 acc = { 0.0f,0.0f,float(rand() % 10) };
+			//随机lifeTime
+			float lifeTime = float(rand() % 100) / 100.0f;
+
+
+			float pspeed = 0.0f;
+			//float lifeTime = 1.0f;
+			float protateSpeed = 0.0f;
+			int pcolor = bodycolor;
+			auto newBlockParticle = std::make_unique<BlockParticle>(parPos, Vector2( 5, 5), toward, acc, pspeed, lifeTime, protateSpeed, pcolor);
+			ObjectManager::Instance()->AddObject(std::move(newBlockParticle));
+		}
 	}
 
+	//计算朝向
+	Vector2 aimWorldPos = m_camera.ScreenToWorld(Vector2((float)aimPosX, (float)aimPosY));
+	Vector2 aimDir = { aimWorldPos.x - pos.x,aimWorldPos.y - pos.y };
+	rotate = atan2(aimDir.x, aimDir.y);
+	
 
 }
 
 void Player::Draw(const Camera& camera)
 {
-	
+	if (isDead)
+	{
+		return;
+	}
 	Object::Draw(camera);
-	//Vector2 screenleftTop = TransformFrom3D(Vector3(leftTop.x,leftTop.y,pos.z), objectMatrix,camera.heightscale);
-	Vector2 screenleftTop = Transform(leftTop, objectMatrix);
-	//Charactor::Draw(camera);
-	Novice::DrawBox(int(screenleftTop.x), int(screenleftTop.y - pos.z * camera.heightscale), int(size.x), int(size.y), 0.0f, curcolor, kFillModeSolid);
+	objectMatrix = camera.GetObjectMatrix(Vector2(pos.x, pos.y), rotate);
+	
+	//Vector2 screenleftTop = Transform(leftTop, objectMatrix);
+	//Novice::DrawBox(int(screenleftTop.x), int(screenleftTop.y - pos.z * camera.heightscale), int(size.x), int(size.y),
+	//	0.0f, curcolor, kFillModeSolid);
+
+	Vector2 screenDrawPos[4];
+	for (size_t i = 0; i < 4; i++)
+	{
+		screenDrawPos[i] = Transform(corners[i], objectMatrix);
+	}
+
+	for (int i = 0; i < 7; i++)
+	{
+		Novice::DrawQuad(int(screenDrawPos[0].x), int(screenDrawPos[0].y - (i*2) - pos.z * camera.heightscale),
+			int(screenDrawPos[1].x), int(screenDrawPos[1].y - (i * 2) - pos.z * camera.heightscale),
+			int(screenDrawPos[2].x), int(screenDrawPos[2].y - (i * 2) - pos.z * camera.heightscale),
+			int(screenDrawPos[3].x), int(screenDrawPos[3].y - (i * 2) - pos.z * camera.heightscale),
+			i * 32, 0, 32, 32, playerImg
+			, color);
+	}
+
+
 	
 
 #ifdef _DEBUG

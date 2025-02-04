@@ -68,4 +68,5 @@ private:
 
 	//std::unique_ptr<BlockEmitter> tailEmitter = nullptr;
 	BlockEmitter* tailEmitter = nullptr;
+
 };

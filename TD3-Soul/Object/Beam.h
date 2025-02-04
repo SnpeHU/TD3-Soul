@@ -10,6 +10,8 @@ public:
 	~Beam() = default;
 	void Update() override;
 	void Draw(const Camera& camera) override;
+
+	void SetStartPos(Vector3 _startPos) { startPos = _startPos; };
 private:
 	Vector3 startPos;
 	float maxSpeed;
@@ -24,10 +26,10 @@ private:
 
 	int nodeCount;
 	float linkSize = 30.0f;
-	Vector2 parSize = { 30.0f,30.0f };
+	Vector2 parSize = { 20.0f,20.0f };
 	std::vector<Vector3> points;
 	Timer emitTimer;
-	float emitInterval = 0.1f;
+	float emitInterval = 0.03f;
 
 	int emitIndex = 0;
 	int emitCount = 2;

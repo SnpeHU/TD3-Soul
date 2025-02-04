@@ -95,8 +95,8 @@ void ObjectManager::AddObject(std::unique_ptr<Object> object)
 
 void ObjectManager::AddObjectBy(Object* object)
 {
-	objects.push_back(std::unique_ptr<Object>(object));
-	//objects.emplace_back(object);
+	//objects.push_back(std::unique_ptr<Object>(object));
+	objects.emplace_back(object);
 }
 
 

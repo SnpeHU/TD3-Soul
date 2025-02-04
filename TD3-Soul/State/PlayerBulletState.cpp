@@ -39,8 +39,18 @@ AimState::AimState(PlayerBullet* owner)
 				powerLevel++;
 				if (powerLevel == 1)
 				{
-					owner->setIsCanShoot(true);
+					Novice::PlayAudio(sound[0], 0, 20.0f);
 				}
+				else if (powerLevel == 2)
+				{
+					Novice::PlayAudio(sound[1], 0, 20.0f);
+				}
+				else if (powerLevel == 3)
+				{
+					Novice::PlayAudio(sound[2], 0, 20.0f);
+				}
+					owner->setIsCanShoot(true);
+	
 
 			}
 			currentTime += increTime;
@@ -50,6 +60,9 @@ AimState::AimState(PlayerBullet* owner)
 void AimState::onEnter()
 {
 	owner->switchState(PlayerBullet::BulletState::Aim);
+	aimTimer.restart();
+	powerLevel = 0;
+	currentTime = minTime;
 }
 void AimState::onUpdate()
 {
@@ -59,13 +72,12 @@ void AimState::onUpdate()
 }
 void AimState::onExit()
 {
-	aimTimer.restart();
+
 	//子弹速度等于玩家朝向* （基础速度 + 力量等级的2次方
 	Vector3 vel = owner->GetToward() * (basicspeed + powf(3, (float)powerLevel));
 	/*Vector3 vel = owner->GetToward() * (basicspeed + );*/
 	owner->SetVelocity(vel);
-	powerLevel = 0;
-	currentTime = minTime;
+
 	
 	
 }

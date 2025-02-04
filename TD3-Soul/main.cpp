@@ -3,18 +3,27 @@
 #include <Manager/CharactorManager.h>
 #include <Manager/ObjectManager.h>
 #include "Camera.h"
+#include "Tool/read_csv.h"
 //debug
 #ifdef _DEBUG
 #include<imgui.h>
 #endif // DEBUG
 
 
-const char kWindowTitle[] = "GC1A_05_コウ_ホウケイ_タイトル";
+const char kWindowTitle[] = "GC1A_05_コウ_ホウケイ_GEO SOULS";
 
- float windowWidth = 1280;
+float windowWidth = 1280;
 float windowHeight = 720;
 
+
+
 Camera m_camera(Vector2(0.0f, 0.0f));
+
+
+//aim
+int aimPosX;
+int aimPosY;
+int aimLength = 8;
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -22,12 +31,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ライブラリの初期化
 	Novice::Initialize(kWindowTitle, 1280, 720);
 
+	//int StartImg = 0;//Novice::LoadTexture("./rs/start.png");
+
+
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
 	char preKeys[256] = {0};
 
+	int guidePosX = 1060;
+	int guidePosY = 620;
 	
-	
+	int guideImg = Novice::LoadTexture("./rs/guide.png");
+
 
 	// シーンマネージャーの初期化
 	SceneManager::Instance()->Init();
@@ -45,7 +60,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓更新処理ここから
 		///
-		
+		Novice::SetMouseCursorVisibility(0);
+		Novice::GetMousePosition(&aimPosX, &aimPosY);
+
 		SceneManager::Instance()->onInput(keys, preKeys);
 		SceneManager::Instance()->Update();
 		///
@@ -55,9 +72,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
-		
-		SceneManager::Instance()->Draw(m_camera);
 
+		SceneManager::Instance()->Draw(m_camera);
+		Novice::DrawBox(aimPosX - aimLength, aimPosY, aimLength, 2, 0.0f, 0xff0000ff, kFillModeSolid);
+		Novice::DrawBox(aimPosX + aimLength, aimPosY, aimLength, 2, 0.0f, 0xff0000ff, kFillModeSolid);
+		Novice::DrawBox(aimPosX + 2, aimPosY + aimLength - 2, 2, aimLength, 0.0f, 0xff0000ff, kFillModeSolid);
+		Novice::DrawBox(aimPosX + 2, aimPosY - aimLength - 2, 2, aimLength, 0.0f, 0xff0000ff, kFillModeSolid);
 
 #ifdef _DEBUG
 		ImGui::Begin("BasicInfo");
@@ -71,9 +91,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #endif
 
 
-		
-
-		
+		//guide	表示する
+		Novice::DrawSprite(guidePosX, guidePosY, guideImg,1.0f ,1.0f, 0.0f, WHITE);
 
 		///
 		/// ↑描画処理ここまで

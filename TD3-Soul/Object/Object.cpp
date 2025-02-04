@@ -11,7 +11,7 @@ Object::~Object()
 	{
 		CollisionManager::Instance()->DestroyCollisionBox(hurt_box);
 	}
-}
+ }
 
 void Object::Draw(const Camera& camera)
 {

@@ -44,5 +44,6 @@ void Wall::Draw(const Camera& camera)
 
 	Novice::DrawBox(int(frontDrawPos.x), int(frontDrawPos.y), int(size.x), int(height/2), 0.0f, color, kFillModeSolid);
 	Novice::DrawBox(int(topDrawPos.x), int(topDrawPos.y), int(size.x), int(size.y), 0.0f, topColor, kFillModeSolid);
+
 	
 }

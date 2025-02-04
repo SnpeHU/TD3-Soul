@@ -10,7 +10,7 @@ PlayerBullet::PlayerBullet(Vector3 pos)
 	this->pos = pos;
 	toward = { 1.0f,0.0f,0.0f };
 	size = { 10.0f,10.0f };
-	speed = 4.0f;
+	speed = 4.5f;
 	color = 0x717170FF;
 
 	isDeBug = true;
@@ -73,7 +73,7 @@ void PlayerBullet::Update()
 		rotateCenter = CharactorManager::Instance()->GetPlayer()->GetPos();
 		pos.x = rotateCenter.x + rotateRadius * cos(rotateAngle);
 		pos.y = rotateCenter.y + rotateRadius * sin(rotateAngle);
-		shakePosZ = (-50 + rand() % 100) / 50.0f * 2.0f;
+		shakePosZ = (-50 + rand() % 100) / 50.0f * 3.0f;
 
 		screenPos = Transform(Vector2(0.0f, 0.0f), objectMatrix);//用于计算子弹发射位置与鼠标位置的角度
 		Novice::GetMousePosition(&mouseX, &mouseY);

@@ -19,6 +19,9 @@ public:
 
 	bool GetIsDead() const { return isDead; };//只用于判断玩家和蛇主体的死亡
 
+	void SetToward(Vector3 _toward) { toward = _toward; };
+	Vector3 GetToward() const { return toward; };
+
 	void SetVelocity(Vector3 _velocity) { velocity = _velocity; };
 	Vector3 GetVelocity() const { return velocity; };
 
@@ -33,6 +36,11 @@ public:
 
 	void SetEnableResistance(bool flag) { isEnableResistance = flag; };
 	bool getEnableResistance() const { return isEnableResistance; };
+
+	void SetColor(int _color) { color = _color; };
+	int GetColor() const { return color; };
+
+	void SetSpeed(float _speed) { speed = _speed; };
 
 
 protected:
@@ -49,7 +57,7 @@ protected:
 	Vector2 leftTop;
 	
 	bool isEnableGravity = false;
-	float gravity = 0.6f;
+	float gravity = 0.3f;
 
 
 	bool isEnableResistance = false;//是否启用摩擦力

@@ -21,6 +21,9 @@ public:
 	Vector3 GetPos() const { return pos; };
 	void SetPos(Vector3 _pos) { pos = _pos; };
 
+	Vector2 GetSize() const { return size; };
+	void SetSize(Vector2 _size) { size = _size; };
+
 	bool GetCanRemove() const { return isCanRemove; };
 	void SetCanRemove(bool _isCanRemove) { isCanRemove = _isCanRemove; };
 
@@ -57,6 +60,7 @@ protected:
 
 
 	int color = 0x00FFFFFF;
+	int phasecolor;
 
 	Vector2 shadowSize = { 0.0f,0.0f };
 	//影子颜色为黑色

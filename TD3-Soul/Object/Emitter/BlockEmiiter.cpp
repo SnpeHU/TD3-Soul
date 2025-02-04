@@ -6,7 +6,7 @@ BlockEmitter::BlockEmitter(Vector3 pos, float emitInterval)
 	name = "BlockEmitter";
 	this->pos = pos;
 	this->emitInterval = emitInterval;
-	size = { 50.0f,50.0f };
+	size = { 30.0f,30.0f };
 
 	//emitTimer
 	emitTimer.set_one_shot(false);
