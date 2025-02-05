@@ -1,36 +1,89 @@
 #include "BasicBullet.h"
-
-BasicBullet::BasicBullet(Vector3 pos,Vector3 toward,float speed)
+#include "Emitter/BlockParticle.h"
+#include <Manager/ObjectManager.h>
+BasicBullet::BasicBullet(Vector3 pos, Vector3 _target)
 {
 	this->pos = pos;
-	this->toward = toward;
-	this->speed = speed;
+	this->targetPos = _target;
+	startPos = pos;
 
-	size = { 10.0f,10.0f };
+	size = { 200.0f,200.0f };
 
 	color = 0x8B3A3AFF;
 
 	hurt_box = CollisionManager::Instance()->CreatCollisionBox(this);
-	hurt_box->setLayerSrc(CollisionLayer::EnermyBullet);
-	hurt_box->addLayerDest(CollisionLayer::Map, [this]() {
-		isCanRemove = true;
-		});
-	hurt_box->addLayerDest(CollisionLayer::Player, [this]() {
-		isCanRemove = true;
-		});
-	hurtBoxSize = { size.x * 2 - 3,size.y * 2 - 3 };
+	hurt_box->setLayerSrc(CollisionLayer::Reducer);
+	//hurt_box->addLayerDest(CollisionLayer::Map, [this]() {
+	//	isCanRemove = true;
+	//	});
+
+	hurtBoxSize = { size.x,size.y};
 	hurt_box->setSize(hurtBoxSize);
+	hurt_box->setEnabled(false);
+
+	moveTimer.set_one_shot(true);
+	moveTimer.set_wait_time(moveltime);
+	moveTimer.set_on_timeout([this]() {
+		hurt_box->setEnabled(true);
+		this->pos = targetPos;
+		isArrive = true;
+
+		});
+
+
+	lifeTimer.set_one_shot(true);
+	lifeTimer.set_wait_time(lifeTime);
+	lifeTimer.set_on_timeout([this]() {
+		isCanRemove = true;
+		});
 }
 
 void BasicBullet::Update()
 {
-	velocity = toward * speed;
-	Bullet::Update();
+
+	if (!isArrive)
+	{
+		float t = moveTimer.get_progress();
+		if (t > 1.0f)
+		{
+			t = 1.0f;
+		}
+		pos.x = (1 - t) * startPos.x + t * targetPos.x;
+		pos.y = (1 - t) * startPos.y + t * targetPos.y;
+		pos.z = (1 - t) * startPos.z + t * targetPos.z + jumpHeight * (1 - t) * t * 4;
+		moveTimer.on_update(deltaTime);
+	}
+	else
+	{
+		lifeTimer.on_update(deltaTime);
+	}
+
+	if (hurt_box)
+	{
+		hurt_box->setPos(get_logic_center());
+	}
 }
 
 void BasicBullet::Draw(const Camera& camera)
 {
 	Object::Draw(camera);
-	Vector2 screenDrawPos = Transform(Vector2(0.0f, size.y), objectMatrix);
-	Novice::DrawEllipse(int(screenDrawPos.x), int(screenDrawPos.y - pos.z * camera.heightscale), int(size.x), int(size.y), 0.0f, color, kFillModeSolid);
+	if (!isArrive)
+	{
+		Vector2 screenDrawPos = Transform(Vector2(0.0f, 40.0f), objectMatrix);
+		Novice::DrawEllipse(int(screenDrawPos.x), int(screenDrawPos.y - pos.z * camera.heightscale), int(20.0f), int(20.0f), 0.0f, color, kFillModeSolid);
+	}
+	else
+	{
+		//Vector2 screenDrawPos = Transform(Vector2(0.0f, 100.0f), objectMatrix);
+
+			Vector3 parPos = { pos.x + rand() % int(size.x) - size.x / 2,pos.y + rand() % int(size.y),0.0f };
+			Vector3 acc = { 0.0f,0.0f,float(rand() % 10 / 2) };
+			float plifeTime = float(rand() % 100) / 100.0f;
+			float pspeed = 0.0f;
+			float rotateSpeed = 0.0f;
+			int pcolor = color;
+			auto newBlockParticle = std::make_unique<BlockParticle>(parPos, Vector2(5, 5), toward, acc, pspeed, plifeTime, rotateSpeed, pcolor);
+			ObjectManager::Instance()->AddObject(std::move(newBlockParticle));
+	}
+
 }

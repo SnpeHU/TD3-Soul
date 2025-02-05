@@ -13,7 +13,7 @@ Snake::Snake(Vector3 pos)
 	size = { 30.0f,30.0f };
 	speed = 2.5f;
 	color = 0x9E5C62FF;
-	nodeNum = 3;
+	nodeNum = 10;
 	nodeInterval = 45.0f;
 	aliveNodeNum = nodeNum;
 	gravity = 0.05f;
@@ -51,6 +51,7 @@ Snake::Snake(Vector3 pos)
 	stateMachine.RegisterState("Chase", new Chase());
 	stateMachine.RegisterState("Attack", new Attack());
 	stateMachine.RegisterState("ToSecond",new ToSecond());
+	stateMachine.RegisterState("RangeAttack", new RangeAttack());
 	stateMachine.SetEntry("Basic");
 
 
@@ -173,7 +174,7 @@ void Snake::Update()
 	{
 		if (isActive && !isDead)
 		{
-		//	stateMachine.onUpdate();
+			stateMachine.onUpdate();
 		}
 		else
 		{

@@ -1,6 +1,7 @@
 #include "SnakeState.h"
 #include "Object/Snake.h"
 #include "Manager/CharactorManager.h"
+#include "Object/BasicBullet.h"
 #include "Object/Beam.h"
 #include "Camera.h"
 extern Camera m_camera;
@@ -23,15 +24,32 @@ BasicState::BasicState()
 				{
 					
 					snake->SwitchState("UpHead");
+					//snake->SwitchState("Move");
 				}
 				else
 				{
-					snake->SwitchState("Jump");
+					//snake->SwitchState("Jump");
+					snake->SwitchState("Move");
 				}
 				break;
 			case 1:
-				CharactorManager::Instance()->GetSnake()->SwitchState("Chase");
-				//CharactorManager::Instance()->GetSnake()->SwitchState("UpHead");
+				
+				if (snake->phases == 0)
+				{
+
+					snake->SwitchState("Chase");
+				}
+				else
+				{
+					if (rand() % 100 < 60)
+					{
+						snake->SwitchState("Chase");
+					}
+					else
+					{
+						snake->SwitchState("Jump");
+					}
+				}
 				break;
 			default:
 				break;
@@ -67,8 +85,15 @@ JumpState::JumpState()
 	timer.set_one_shot(true);
 	timer.set_on_timeout([&]()
 		{
-			
-			CharactorManager::Instance()->GetSnake()->SwitchState("Basic");
+			CharactorManager::Instance()->GetSnake()->SetPos(targetPos);
+			if (rand() % 100 < 85)
+			{
+				CharactorManager::Instance()->GetSnake()->SwitchState("Chase");
+			}
+			else
+			{
+				CharactorManager::Instance()->GetSnake()->SwitchState("Jump");
+			}
 		});
 }
 
@@ -128,7 +153,14 @@ void MoveState::onEnter()
 	moveTimer.set_on_timeout([&]()
 		{
 		
-			CharactorManager::Instance()->GetSnake()->SwitchState("Basic");
+			if (rand() % 100 < 80)
+			{
+				CharactorManager::Instance()->GetSnake()->SwitchState("RangeAttack");
+			}
+			else
+			{
+				CharactorManager::Instance()->GetSnake()->SwitchState("Jump");
+			}
 		});
 
 }
@@ -136,13 +168,22 @@ void MoveState::onEnter()
 void MoveState::onUpdate()
 {
 	targetDir = (targetPos - CharactorManager::Instance()->GetSnake()->GetPos()).normalize();
-	CharactorManager::Instance()->GetSnake()->SetVelocity(targetDir * 6.0f);
+	CharactorManager::Instance()->GetSnake()->SetVelocity(targetDir * 5.0f);
 	moveTimer.on_update(deltaTime);
 
-	if ((targetPos - CharactorManager::Instance()->GetSnake()->GetPos()).length() < 100.0f)
+	//如果抵达目标附近
+	if ((targetPos - CharactorManager::Instance()->GetSnake()->GetPos()).length() < 80.0f)
 	{
-		CharactorManager::Instance()->GetSnake()->SwitchState("Basic");
+		if (rand() % 100 < 80)
+		{
+			CharactorManager::Instance()->GetSnake()->SwitchState("RangeAttack");
+		}
+		else
+		{
+			CharactorManager::Instance()->GetSnake()->SwitchState("Jump");
+		}
 	}
+
 }
 
 void MoveState::onExit()
@@ -376,7 +417,7 @@ Chase::Chase()
 			}
 			else
 			{
-				if (rand() % 100 < 10)
+				if (rand() % 100 < 20)
 				{
 					CharactorManager::Instance()->GetSnake()->SwitchState("Chase");
 				}
@@ -439,7 +480,7 @@ Attack::Attack()
 	attackTimer.set_on_timeout([&]()
 		{
 
-			if (rand() % 100 < 50)
+			if (rand() % 100 < 30)
 			{
 				CharactorManager::Instance()->GetSnake()->SwitchState("Chase");
 			}
@@ -459,9 +500,6 @@ void Attack::onEnter()
 	isAttack = false;
 
 	Vector2 toward = { CharactorManager::Instance()->GetSnake()->GetToward().x, CharactorManager::Instance()->GetSnake()->GetToward().y };
-
-
-	
 
 	startPos = CharactorManager::Instance()->GetSnake()->GetPos();
 	upPos = CharactorManager::Instance()->GetSnake()->GetPos();
@@ -483,6 +521,7 @@ void Attack::onUpdate()
 				m_camera.Shake(4.0f, 0.2f);
 				isSound = true;
 				//播放音效
+				Novice::PlayAudio(attackAudio, 0, 0.8f);
 			}
 		}
 	
@@ -554,21 +593,25 @@ RangeAttack::RangeAttack()
 
 void RangeAttack::onEnter()
 {
-	//重复15次
-	for (int i = 0; i < 15; i++)
+	//重复10次
+	for (int i = 0; i < 10; i++)
 	{
 		//随机从0到4行选一行
 		int row = rand() % 5;
 		//随机从0到6列选一列
 		int col = rand() % 7;
-		Vector2 targetPos = { firstPos.x + col * perSize.x,firstPos.y - row * perSize.y };
-	}
+		Vector3 targetPos = { firstPos.x + col * perSize.x,firstPos.y - row * perSize.y,0.0f };
 
+		auto bullet = std::make_unique<BasicBullet>(CharactorManager::Instance()->GetSnake()->GetPos(), targetPos);
+		ObjectManager::Instance()->AddObject(std::move(bullet));
+	}
+	Novice::PlayAudio(throwAudio, 0, 1.0f);
 
 }
 
 void RangeAttack::onUpdate()
 {
+	CharactorManager::Instance()->GetSnake()->SwitchState("Basic");
 }
 
 void RangeAttack::onExit()

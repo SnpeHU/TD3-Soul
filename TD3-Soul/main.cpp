@@ -10,7 +10,7 @@
 #endif // DEBUG
 
 
-const char kWindowTitle[] = "GC1A_05_コウ_ホウケイ_GEO SOULS";
+const char kWindowTitle[] = "GC1A_04_GEO SOULS";
 
 float windowWidth = 1280;
 float windowHeight = 720;
@@ -74,10 +74,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 
 		SceneManager::Instance()->Draw(m_camera);
-		Novice::DrawBox(aimPosX - aimLength, aimPosY, aimLength, 2, 0.0f, 0xff0000ff, kFillModeSolid);
-		Novice::DrawBox(aimPosX + aimLength, aimPosY, aimLength, 2, 0.0f, 0xff0000ff, kFillModeSolid);
-		Novice::DrawBox(aimPosX + 2, aimPosY + aimLength - 2, 2, aimLength, 0.0f, 0xff0000ff, kFillModeSolid);
-		Novice::DrawBox(aimPosX + 2, aimPosY - aimLength - 2, 2, aimLength, 0.0f, 0xff0000ff, kFillModeSolid);
+		Novice::DrawBox(aimPosX - aimLength, aimPosY, aimLength, 3, 0.0f, 0x00BFFFff, kFillModeSolid);
+		Novice::DrawBox(aimPosX + aimLength, aimPosY, aimLength, 3, 0.0f, 0x00BFFFff, kFillModeSolid);
+		Novice::DrawBox(aimPosX + 2, aimPosY + aimLength - 2, 3, aimLength, 0.0f, 0x00BFFFff, kFillModeSolid);
+		Novice::DrawBox(aimPosX + 2, aimPosY - aimLength - 2, 3, aimLength, 0.0f, 0x00BFFFff, kFillModeSolid);
 
 #ifdef _DEBUG
 		ImGui::Begin("BasicInfo");

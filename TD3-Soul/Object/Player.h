@@ -35,7 +35,7 @@ private:
 	Timer rollTimer;
 	float rolltime = 0.13f;
 	Timer rollingCoolDownTimer;
-	float rollingCoolDownTime = 0.12f;
+	float rollingCoolDownTime = 0.2f;
 
 	//瞄准控制
 	bool isAimButton = false;
@@ -66,5 +66,12 @@ private:
 	float rotateSpeed = 0.03f;
 	float rotate = 0.0f;
 	Vector2 corners[4];
+
+	Timer reduceTimer;
+	float reduceTime = 0.2f;
+	bool isReducing = false;
+
+	int dashAudio = Novice::LoadAudio("./rs/dash.mp3");
+	int shootAudio = Novice::LoadAudio("./rs/shoot.wav");
 
 };

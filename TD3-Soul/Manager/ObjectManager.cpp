@@ -65,7 +65,10 @@ void ObjectManager::Draw(const Camera& camera)
 	for (auto& object : objects)
 	{
 
-		object->Draw(camera);
+		if (object != nullptr)
+		{
+			object->Draw(camera);
+		}
 
 	}
 #ifdef _DEBUG

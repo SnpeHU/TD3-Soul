@@ -6,5 +6,6 @@ enum class CollisionLayer
 	PlayerBullet,
 	Enemy,
 	EnermyBullet,
+	Reducer,//减速器
 	Map,
 };

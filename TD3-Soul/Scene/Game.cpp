@@ -44,7 +44,7 @@ void Game::onInput(char* keys, char* prekeys)
 {
 	if (keys[DIK_BACKSPACE] && !prekeys[DIK_BACKSPACE])
 	{
-		SceneManager::Instance()->switchScene(SceneManager::SceneType::Title);
+		//SceneManager::Instance()->switchScene(SceneManager::SceneType::Title);
 	}
 	CharactorManager::Instance()->onInput(keys, prekeys);
 	//m_camera.Input(keys);

@@ -60,6 +60,11 @@ Player::Player(Vector3 _pos)
 		isInvincible = true;
 		Novice::PlayAudio(impactAudio, 0, 1.0f);
 		});
+	hurt_box->addLayerDest(CollisionLayer::Reducer, [this]() {
+		reduceTimer.restart();
+		speed = 1.5f;
+		isReducing = true;
+		});
 
 	hurtBoxSize = { size.x,size.y/2 };
 	hurt_box->setSize(hurtBoxSize);
@@ -89,6 +94,13 @@ Player::Player(Vector3 _pos)
 	invincibleTimer.set_on_timeout([&]() {
 		isInvincible = false;
 		invincibleTimer.restart();
+		});
+
+	reduceTimer.set_one_shot(true);
+	reduceTimer.set_wait_time(reduceTime);
+	reduceTimer.set_on_timeout([&]() {
+		isReducing = false;
+		speed = 3.0f;
 		});
 
 	corners[0] = { -size.x / 2,size.y/2 };
@@ -193,7 +205,6 @@ void Player::Update()
 		isRolling = true;
 		isAiming = false;
 		//hurt_box->setEnabled(false);
-		//翻滚是无敌
 		if (isHaveBullet)
 		{
 			if (playerBullet->getState() == PlayerBullet::BulletState::Aim)
@@ -201,8 +212,15 @@ void Player::Update()
 				playerBullet->getStateMachine().SwitchTo("Follow");
 			}
 		}
+		Novice::PlayAudio(dashAudio, 0, 0.4f);
 
 	}
+
+	if (isReducing)
+	{
+		reduceTimer.on_update(deltaTime);
+	}
+
 
 		if (isAimButton && !isRolling && !isAiming)
 		{
@@ -249,6 +267,7 @@ void Player::Update()
 			if (playerBullet->getIsCanShoot())
 			{
 				playerBullet->getStateMachine().SwitchTo("Shooted");
+				Novice::PlayAudio(shootAudio, 0, 0.8f);
 				isHaveBullet = false;
 			}
 			else
@@ -281,7 +300,7 @@ void Player::Update()
 		
 	}
 	
-	shadowSize = { (size.x / 2 + 8) * (1.0f - pos.z * 0.005f), (size.y / 2 - 5) * (1.0f - pos.z * 0.005f) };
+	shadowSize = { (size.x / 2 + 8) * (1.0f - pos.z * 0.005f), (size.y / 2) * (1.0f - pos.z * 0.005f) };
 	Charactor::Update();
 
 	//无敌时间

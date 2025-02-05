@@ -43,7 +43,7 @@ ButtonWall::ButtonWall(Vector3 pos, Vector3 size)
 		originTopColor = temp;
 		});
 
-	imgPos = { -size.x /2 + 10,size.y + 50};
+	imgPos = { -size.x + 20 ,size.y + 50};
 
 	rotateCenter = { pos.x,pos.y + size.y / 2,pos.z + height+32};
 	corners[0] = { -64 / 2,64 /2 };

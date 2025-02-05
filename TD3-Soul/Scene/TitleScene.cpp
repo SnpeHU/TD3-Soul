@@ -16,6 +16,7 @@ TitleScene::TitleScene()
 
 void TitleScene::onEnter()
 {
+	m_camera.Reset();
 	m_camera.SetPos(Vector2(0.0f, 0.0f));
 	CharactorManager::Instance()->RespwanPlayer(Vector3(0.0f, 0.0f, 0.0f));
 	frontColor = 0x00000000;
@@ -53,9 +54,10 @@ void TitleScene::onEnter()
 
 void TitleScene::onInput(char* keys, char* prekeys)
 {
+
 	if (keys[DIK_BACKSPACE] && !prekeys[DIK_BACKSPACE])
 	{
-		SceneManager::Instance()->switchScene(SceneManager::SceneType::Game);
+		//SceneManager::Instance()->switchScene(SceneManager::SceneType::Game);
 	}
 	CharactorManager::Instance()->onInput(keys, prekeys);
 }
@@ -88,9 +90,9 @@ void TitleScene::Draw(const Camera& camera)
 {
 	Novice::DrawBox(0, 0, (int)windowWidth, (int)windowHeight, 0.0f, backColor, kFillModeSolid);
 	ObjectManager::Instance()->Draw(camera);
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	CollisionManager::Instance()->onDebugRender(camera);
-//#endif // DEBUG
+#endif // DEBUG
 	Novice::DrawBox(0, 0, (int)windowWidth, (int)windowHeight, 0.0f, frontColor, kFillModeSolid);
 }
 

@@ -81,7 +81,7 @@ void CharactorManager::RespwanPlayer(Vector3 pos)
 	
 	player = new Player(pos);
 	ObjectManager::Instance()->AddObjectBy(player);
-	m_camera.SetTarget(player);
+	//m_camera.SetTarget(player);
 }
 
 void CharactorManager::RespwanSnake()

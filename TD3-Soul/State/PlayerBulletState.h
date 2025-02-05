@@ -41,12 +41,14 @@ private:
 	int powerLevel = 0;
 	int maxPowerLevel = 3;
 
-	float basicspeed = 5.0f;
+	float basicspeed = 5.5f;
 
-	int sound[3] = {
+	int sound[4] = {
 		Novice::LoadAudio("./rs/SoundA.wav"),
 		Novice::LoadAudio("./rs/SoundB.wav"),
 		Novice::LoadAudio("./rs/SoundC.wav"),
+		Novice::LoadAudio("./rs/SoundD.wav")
+
 	};
 
 };

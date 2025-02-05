@@ -43,11 +43,11 @@ public:
 
 
 private:
-	Timer timer;
+	
 	Vector3 targetPos;
 	Vector3 startPos;
+	Timer timer;
 	float totaltime = 1.0f;
-	float passTime = 0.0f;
 
 	float jumpHeight = 300.0f;
 
@@ -65,7 +65,7 @@ public:
 private:
 	Vector3 targetPos;
 	Vector3 targetDir;
-	float moveDistance = 450.0f;
+	float moveDistance = 400.0f;
 
 	Timer moveTimer;
 	float moveTime = 8.0f;
@@ -163,7 +163,7 @@ public:
 	void onExit() override;
 private:
 	Timer chaseTimer;
-	float chaseTime = 5.0f;
+	float chaseTime = 4.0f;
 
 	bool isAttack = false;
 	Charactor* target = nullptr;
@@ -195,6 +195,8 @@ private:
 	bool isAttack = false;
 
 	bool isSound = false;
+
+	int attackAudio = Novice::LoadAudio("./rs/lightimpact.wav");
 };
 
 
@@ -227,4 +229,6 @@ private:
 	Vector2 firstPos;
 
 	Vector2 perSize = { 200.0f,200.0f };
+
+	int throwAudio = Novice::LoadAudio("./rs/throw.wav");
 };
