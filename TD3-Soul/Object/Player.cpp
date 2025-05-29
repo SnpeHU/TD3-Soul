@@ -62,7 +62,7 @@ Player::Player(Vector3 _pos)
 		});
 	hurt_box->addLayerDest(CollisionLayer::Reducer, [this]() {
 		reduceTimer.restart();
-		speed = 1.5f;
+		speed = 2.0f;
 		isReducing = true;
 		});
 
@@ -371,10 +371,10 @@ void Player::Draw(const Camera& camera)
 
 	for (int i = 0; i < 7; i++)
 	{
-		Novice::DrawQuad(int(screenDrawPos[0].x), int(screenDrawPos[0].y - (i*2) - pos.z * camera.heightscale),
-			int(screenDrawPos[1].x), int(screenDrawPos[1].y - (i * 2) - pos.z * camera.heightscale),
-			int(screenDrawPos[2].x), int(screenDrawPos[2].y - (i * 2) - pos.z * camera.heightscale),
-			int(screenDrawPos[3].x), int(screenDrawPos[3].y - (i * 2) - pos.z * camera.heightscale),
+		Novice::DrawQuad(int(screenDrawPos[0].x), int(screenDrawPos[0].y - (i*3) - pos.z * camera.heightscale),
+			int(screenDrawPos[1].x), int(screenDrawPos[1].y - (i * 3) - pos.z * camera.heightscale),
+			int(screenDrawPos[2].x), int(screenDrawPos[2].y - (i * 3) - pos.z * camera.heightscale),
+			int(screenDrawPos[3].x), int(screenDrawPos[3].y - (i * 3) - pos.z * camera.heightscale),
 			i * 32, 0, 32, 32, playerImg
 			, color);
 	}

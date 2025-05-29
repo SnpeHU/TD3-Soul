@@ -66,14 +66,18 @@ void Camera::Input(char* keys)
 		//{
 		//	scale -= 0.05f;
 		//}
-		//if (keys[DIK_C])
-		//{
-		//	angle += 0.05f;
-		//}
-		//if (keys[DIK_V])
-		//{
-		//	angle -= 0.05f;
-		//}
+		if (keys[DIK_C])
+		{
+			rotation += 0.05f;
+		}
+		if (keys[DIK_V])
+		{
+			rotation -= 0.05f;
+		}
+		if (keys[DIK_R])
+		{
+			Reset();
+		}
 	}
 }
 

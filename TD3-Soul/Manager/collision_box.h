@@ -49,9 +49,7 @@ private:
 	Vector3 pos;//boxの中心座標
 	bool enabled = true;
 	//std::function<void()> onCollide;
-
 	Object* owner = nullptr;
-
 
 	CollisionLayer layer_src = CollisionLayer::None;//自身のレイヤー
 	//CollisionLayer layer_dest = CollisionLayer::None;//衝突判定のレイヤー

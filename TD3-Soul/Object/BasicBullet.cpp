@@ -40,6 +40,7 @@ BasicBullet::BasicBullet(Vector3 pos, Vector3 _target)
 
 void BasicBullet::Update()
 {
+	shadowSize = {( 25 + 8) * (1.0f - pos.z * 0.003f), (25 - 5) * (1.0f - pos.z * 0.003f) };//影子大小更新
 
 	if (!isArrive)
 	{
@@ -62,13 +63,25 @@ void BasicBullet::Update()
 	{
 		hurt_box->setPos(get_logic_center());
 	}
+	if (shadowSize.x < 0.0f)
+	{
+		shadowSize.x = 0.0f;
+	}
+	if (shadowSize.y < 0.0f)
+	{
+		shadowSize.y = 0.0f;
+	}
 }
 
 void BasicBullet::Draw(const Camera& camera)
 {
-	Object::Draw(camera);
 	if (!isArrive)
 	{
+		objectMatrix = camera.GetObjectMatrix(Vector2(pos.x, pos.y), 0.0f);
+		Vector2 shadowPos = Transform(Vector2(0.0f, 0.0f), objectMatrix);
+
+		Novice::DrawEllipse(int(shadowPos.x), int(shadowPos.y), int(shadowSize.x), int(shadowSize.y), 0.0f, shadowColor, kFillModeSolid);
+
 		Vector2 screenDrawPos = Transform(Vector2(0.0f, 40.0f), objectMatrix);
 		Novice::DrawEllipse(int(screenDrawPos.x), int(screenDrawPos.y - pos.z * camera.heightscale), int(20.0f), int(20.0f), 0.0f, color, kFillModeSolid);
 	}

@@ -17,7 +17,8 @@ TitleScene::TitleScene()
 void TitleScene::onEnter()
 {
 	m_camera.Reset();
-	m_camera.SetPos(Vector2(0.0f, 0.0f));
+	m_camera.SetTarget(CharactorManager::Instance()->GetPlayer());
+	//m_camera.SetPos(Vector2(0.0f, 0.0f));
 	CharactorManager::Instance()->RespwanPlayer(Vector3(0.0f, 0.0f, 0.0f));
 	frontColor = 0x00000000;
 
@@ -60,6 +61,7 @@ void TitleScene::onInput(char* keys, char* prekeys)
 		//SceneManager::Instance()->switchScene(SceneManager::SceneType::Game);
 	}
 	CharactorManager::Instance()->onInput(keys, prekeys);
+	m_camera.Input(keys);
 }
 
 void TitleScene::Update()

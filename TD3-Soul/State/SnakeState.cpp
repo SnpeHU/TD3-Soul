@@ -417,7 +417,7 @@ Chase::Chase()
 			}
 			else
 			{
-				if (rand() % 100 < 20)
+				if (rand() % 100 < 15)
 				{
 					CharactorManager::Instance()->GetSnake()->SwitchState("Chase");
 				}

@@ -3,6 +3,10 @@
 #define _VECTOR3_H_
 #include <vector>
 #include <cmath>
+
+namespace MyMath {
+
+
 class Vector3
 {
 public:
@@ -114,4 +118,5 @@ public:
         return Vector3(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta)); // 适用于三维空间
     }
 };
+} // namespace MyMath
 #endif // !_VECTOR3_H_
