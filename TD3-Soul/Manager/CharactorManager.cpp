@@ -39,11 +39,11 @@ void CharactorManager::onInput(char* keys, char* prekeys)
 		player->Input(keys, prekeys);
 	}
 	//snake->Input(keys, prekeys);
-	//if (keys[DIK_R] && !prekeys[DIK_R])
-//	{
-		//player->Reset(Vector3(0, 0, 0));
-		//snake->Reset(Vector3(0, -200, 0));
-	//}
+	if (keys[DIK_R] && !prekeys[DIK_R])
+	{
+		player->Reset(Vector3(0, 0, 0));
+		snake->Reset(Vector3(0, -200, 0));
+	}
 }
 
 void CharactorManager::Update()

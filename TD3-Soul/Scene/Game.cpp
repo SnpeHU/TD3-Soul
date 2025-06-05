@@ -18,7 +18,7 @@ void Game::onEnter()
 {
 	frontColor = 0x00000000;
 
-	CharactorManager::Instance()->RespwanPlayer(Vector3(0.0f,50.0f,0.0f));
+	CharactorManager::Instance()->RespwanPlayer(Vector3(0.0f,0.0f,0.0f));
 	CharactorManager::Instance()->RespwanSnake();
 	
 	m_camera.SetTarget(CharactorManager::Instance()->GetPlayer());
@@ -63,7 +63,7 @@ void Game::Update()
 		if(CharactorManager::Instance()->GetPlayer()->GetIsDead() || CharactorManager::Instance()->GetSnake()->GetIsDead())
 		{
 			isOver = true;
-			SceneManager::Instance()->DelayedSwitchScene(SceneManager::SceneType::Title, 2.5f);
+			SceneManager::Instance()->DelayedSwitchScene(SceneManager::SceneType::Title, 3.0f);
 		}
 	}
 	

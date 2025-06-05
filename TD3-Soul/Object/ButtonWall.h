@@ -26,7 +26,7 @@ private:
 	Timer colorChangeTimer;
 	float colorChangeTime = 1.0f;
 
-	int tipColor = 0xe57e7eFF;
+	int tipColor = 0x7d3a3aFF;
 	int originTopColor;
 
 	Vector2 imgPos;
