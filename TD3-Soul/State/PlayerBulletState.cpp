@@ -39,17 +39,13 @@ AimState::AimState(PlayerBullet* owner)
 				powerLevel++;
 				if (powerLevel == 1)
 				{
-					Novice::PlayAudio(sound[0], 0, 25.0f);
+					Novice::PlayAudio(sound[1], 0, 25.0f);
 				}
 				else if (powerLevel == 2)
 				{
-					Novice::PlayAudio(sound[1], 0, 25.0f);
-				}
-				else if (powerLevel == 3)
-				{
 					Novice::PlayAudio(sound[2], 0, 25.0f);
 				}
-				else if (powerLevel == 4)
+				else if (powerLevel == 3)
 				{
 					Novice::PlayAudio(sound[3], 0, 25.0f);
 				}
@@ -67,12 +63,11 @@ void AimState::onEnter()
 	aimTimer.restart();
 	powerLevel = 0;
 	currentTime = minTime;
+	Novice::PlayAudio(sound[0], 0, 25.0f);
 }
 void AimState::onUpdate()
 {
 	aimTimer.on_update(deltaTime);
-
-	
 }
 void AimState::onExit()
 {
@@ -80,9 +75,9 @@ void AimState::onExit()
 	//子弹速度等于玩家朝向* （基础速度 + 力量等级的3次方
 	Vector3 vel = owner->GetToward() * (basicspeed + powf(3, (float)powerLevel));
 	/*Vector3 vel = owner->GetToward() * (basicspeed + );*/
-	owner->SetVelocity(vel);
-
 	
+	owner->SetVelocity(vel);
+	powerLevel = 0;
 	
 }
 #pragma endregion
