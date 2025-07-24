@@ -117,6 +117,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.cpp" />
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager\CharactorManager.cpp" />
     <ClCompile Include="Manager\collision_manager.cpp" />
@@ -138,6 +139,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="Object\PlayerBullet.cpp" />
     <ClCompile Include="Object\Snake.cpp" />
     <ClCompile Include="Object\Wall.cpp" />
+    <ClCompile Include="PlayerCommands.cpp" />
     <ClCompile Include="Scene\Game.cpp" />
     <ClCompile Include="Scene\TestScene.cpp" />
     <ClCompile Include="Scene\TitleScene.cpp" />
@@ -175,6 +177,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ICommand.h" />
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Manager\CharactorManager.h" />
     <ClInclude Include="Manager\collision_box.h" />
     <ClInclude Include="Manager\collision_layer.h" />
@@ -202,6 +205,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="Object\Snake.h" />
     <ClInclude Include="Object\Util.h" />
     <ClInclude Include="Object\Wall.h" />
+    <ClInclude Include="PlayerCommands.h" />
     <ClInclude Include="Scene\Game.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\TestScene.h" />
