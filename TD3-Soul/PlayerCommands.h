@@ -3,7 +3,7 @@
 
 class Player;
 
-// Movement Commands
+
 class MoveUpCommand : public ICommand
 {
 public:
@@ -28,7 +28,7 @@ public:
     void Execute(Player* player) override;
 };
 
-// Action Commands
+
 class JumpCommand : public ICommand
 {
 public:

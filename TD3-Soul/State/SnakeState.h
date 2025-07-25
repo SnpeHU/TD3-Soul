@@ -10,9 +10,6 @@ class BlockEmitter;
 class Charactor;
 class Snake;
 
-
-
-
 class BasicState : public StateNode
 {
 public:

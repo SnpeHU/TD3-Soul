@@ -44,6 +44,9 @@
     <Filter Include="Object\Emitter">
       <UniqueIdentifier>{c2f48dfe-373d-4ddb-bfba-290e5786743a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Command">
+      <UniqueIdentifier>{7e75d39c-a6eb-4f5c-be9e-582de0d2426c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\DirectXCommon.cpp">
@@ -147,6 +150,12 @@
     <ClCompile Include="Object\ButtonWall.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="InputHandler.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCommands.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -216,7 +225,6 @@
     <ClInclude Include="C:\KamataEngine\DirectXGame\math\Vector2.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\math\Vector3.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\math\Vector4.h" />
-    <ClInclude Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\base\StringUtility.h">
       <Filter>KamataEngine\Include</Filter>
     </ClInclude>
@@ -343,6 +351,18 @@
     </ClInclude>
     <ClInclude Include="Tool\Color.h">
       <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="ICommand.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="InputHandler.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCommands.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.h">
+      <Filter>KamataEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

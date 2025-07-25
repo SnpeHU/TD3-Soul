@@ -114,21 +114,26 @@ void PlayerBullet::Update()
 	if (velocity.length() > 5.0f)
 	{
 		isCanDamage = true;
+	//在Release模式下，开启粒子,BUG:Debug模式下，报错
+#ifdef NDEBUG
+
 		if(!tailEmitter->GetEnable())
 		{
 			tailEmitter->SetEnable(true);
 		}
+#endif
 	}
 	else
 	{
 		isCanDamage = false;
+#ifdef NDEBUG
 		if (tailEmitter->GetEnable())
 		{
 			tailEmitter->SetEnable(false);
 		}
+#endif
 	}
 
-	//collisionbox
 
 		if (hurt_box)
 		{

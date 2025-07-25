@@ -119,7 +119,7 @@ Player::~Player()
 
 void Player::Input(char* keys, char* prekeys)
 {
-    // Use command pattern for input handling
+ 
     if (inputHandler) {
         inputHandler->HandleInput(keys, prekeys, this);
     }

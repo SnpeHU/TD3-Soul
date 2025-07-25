@@ -16,7 +16,7 @@ public:
     void BindCommand(int key, std::unique_ptr<ICommand> command);
 
 private:
-    // Commands for different actions
+    // プレーヤー命令集合
     std::unique_ptr<MoveUpCommand> moveUpCommand;
     std::unique_ptr<MoveDownCommand> moveDownCommand;
     std::unique_ptr<MoveLeftCommand> moveLeftCommand;
@@ -26,7 +26,7 @@ private:
     std::unique_ptr<AimCommand> aimCommand;
     std::unique_ptr<StopAimCommand> stopAimCommand;
 
-    // Key bindings map
+	// マップでキーとコマンドを保存
     std::unordered_map<int, ICommand*> keyBindings;
     
     void InitializeDefaultBindings();
